@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านข้าวมันไก่กิมเง็ก & ติ่มซำโกปี๊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-effect { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-stone-100">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const defaultMenus = [
+            { id: 1, name: "ข้าวมันไก่ต้ม (สูตรกิมเง็ก)", desc: "ไก่เนื้อนุ่มฉ่ำ ข้าวมันหอมกรุ่น น้ำจิ้มรสเด็ด", price: 50, category: "ข้าวมันไก่", mediaUrl: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80", type: "image", isRecommend: true },
+            { id: 2, name: "ฮะเก๋ากุ้ง (โกปี๊ หลังโรงไม้)", desc: "แป้งบางใส ไส้กุ้งเด้งเต็มคำ นึ่งร้อนๆ สดใหม่", price: 55, category: "ติ่มซำ", mediaUrl: "https://assets.mixkit.co/videos/preview/mixkit-putting-dumplings-in-a-steamer-43026-large.mp4", type: "video", isRecommend: true },
+            { id: 3, name: "โกปี๊เย็นโบราณ", desc: "กาแฟโบราณคั่วเข้ม หอมหวานมันกำลังดี", price: 35, category: "เครื่องดื่ม", mediaUrl: "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=800&q=80", type: "image", isRecommend: false }
+        ];
+
+        const App = () => {
+            const [view, setView] = useState('customer');
+            const [menus, setMenus] = useState(() => {
+                const saved = localStorage.getItem('restaurant_menus_v2');
+                return saved ? JSON.parse(saved) : defaultMenus;
+            });
+            const [activeCategory, setActiveCategory] = useState('แนะนำ');
+            const categories = ['แนะนำ', 'ข้าวมันไก่', 'ติ่มซำ', 'เครื่องดื่ม'];
+
+            useEffect(() => {
+                localStorage.setItem('restaurant_menus_v2', JSON.stringify(menus));
+            }, [menus]);
+
+            const handleAddMenu = (e) => {
+                e.preventDefault();
+                const name = e.target.name.value;
+                const desc = e.target.desc.value;
+                const price = parseFloat(e.target.price.value);
+                const category = e.target.category.value;
+                const mediaUrl = e.target.mediaUrl.value;
+                const isRecommend = e.target.recommend.checked;
+                const type = mediaUrl.includes('.mp4') ? 'video' : 'image';
+
+                const newMenu = { id: Date.now(), name, desc, price, category, mediaUrl, type, isRecommend };
+                setMenus([newMenu, ...menus]);
+                e.target.reset();
+                alert('เพิ่มเมนูสำเร็จ!');
+                setView('customer');
+            };
+
+            const handleDelete = (id) => {
+                if(confirm('ต้องการลบเมนูนี้ใช่หรือไม่?')) {
+                    setMenus(menus.filter(m => m.id !== id));
+                }
+            };
+
+            const filteredMenus = activeCategory === 'แนะนำ' 
+                ? menus.filter(m => m.isRecommend)
+                : menus.filter(m => m.category === activeCategory);
+
+            return (
+                <div className="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative overflow-hidden">
+                    <div className="px-6 py-4 bg-stone-900 text-white flex justify-between items-center z-50 relative">
+                        <div>
+                            <h1 className="text-lg font-bold tracking-wide text-amber-500">ข้าวมันไก่กิมเง็ก & โกปี๊</h1>
+                            <p className="text-[11px] text-stone-300">เมนูดิจิทัลอัจฉริยะ</p>
+                        </div>
+                        <button onClick={() => setView(view === 'customer' ? 'admin' : 'customer')} className="text-xs bg-amber-600 text-white px-3 py-1.5 rounded-md font-semibold hover:bg-amber-500 transition">
+                            {view === 'customer' ? '⚙️ หลังบ้าน' : '👁️ หน้าเว็บลูกค้า'}
+                        </button>
+                    </div>
+
+                    {view === 'customer' && (
+                        <div>
+                            <div className="flex overflow-x-auto px-4 py-3 gap-3 glass-effect sticky top-0 z-40 shadow-sm no-scrollbar">
+                                {categories.map(cat => (
+                                    <button 
+                                        key={cat} onClick={() => setActiveCategory(cat)}
+                                        className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${activeCategory === cat ? 'bg-amber-600 text-white shadow-md transform scale-105' : 'bg-stone-100 text-stone-600 hover:bg-stone-200'}`}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="bg-stone-50 pb-20 min-h-[80vh]">
+                                {filteredMenus.length === 0 && (
+                                    <div className="text-center py-20 text-stone-400 text-sm">ยังไม่มีเมนูในหมวดหมู่นี้</div>
+                                )}
+                                {filteredMenus.map(menu => (
+                                    <div key={menu.id} className="mb-3 bg-white shadow-sm overflow-hidden border-b border-stone-100">
+                                        <div className="relative w-full aspect-video bg-stone-200 overflow-hidden">
+                                            {menu.type === 'video' ? (
+                                                <video autoPlay loop muted playsInline className="object-cover w-full h-full">
+                                                    <source src={menu.mediaUrl} type="video/mp4" />
+                                                </video>
+                                            ) : (
+                                                <img src={menu.mediaUrl} alt={menu.name} className="object-cover w-full h-full" loading="lazy" />
+                                            )}
+                                            {menu.isRecommend && (
+                                                <div className="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded shadow tracking-wider">RECOMMENDED</div>
+                                            )}
+                                        </div>
+                                        <div className="p-4 flex justify-between items-start gap-4">
+                                            <div>
+                                                <h3 className="text-lg font-bold text-stone-800 leading-snug">{menu.name}</h3>
+                                                <p className="text-xs text-stone-500 mt-1 leading-relaxed">{menu.desc}</p>
+                                            </div>
+                                            <div className="text-xl font-bold text-amber-600 whitespace-nowrap">฿{menu.price}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {view === 'admin' && (
+                        <div className="p-6 bg-stone-50 min-h-screen pb-24">
+                            <h2 className="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
+                                <span className="bg-amber-500 w-2 h-5 rounded"></span> เพิ่มเมนูอาหาร / วิดีโอ
+                            </h2>
+                            
+                            <div className="bg-white p-5 rounded-xl shadow-sm border border-stone-200 mb-8">
+                                <form onSubmit={handleAddMenu} className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">ชื่อเมนู</label>
+                                        <input type="text" name="name" required placeholder="เช่น ข้าวมันไก่ตอนพิเศษ" className="w-full rounded-lg border-stone-300 border p-2.5 text-sm" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">คำบรรยาย</label>
+                                        <textarea name="desc" rows="2" placeholder="ไก่เนื้อนุ่มฉ่ำ..." className="w-full rounded-lg border-stone-300 border p-2.5 text-sm"></textarea>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="block text-xs font-bold text-stone-700 mb-1">ราคา (บาท)</label>
+                                            <input type="number" name="price" required placeholder="50" className="w-full rounded-lg border-stone-300 border p-2.5 text-sm" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-stone-700 mb-1">หมวดหมู่</label>
+                                            <select name="category" className="w-full rounded-lg border-stone-300 border p-2.5 text-sm bg-white">
+                                                <option value="ข้าวมันไก่">ข้าวมันไก่</option>
+                                                <option value="ติ่มซำ">ติ่มซำ</option>
+                                                <option value="เครื่องดื่ม">เครื่องดื่ม</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-stone-700 mb-1">ลิงก์รูปภาพ หรือ วิดีโอ (.mp4)</label>
+                                        <input type="url" name="mediaUrl" required placeholder="วางลิงก์รูปภาพ หรือลิงก์คลิป .mp4" className="w-full rounded-lg border-stone-300 border p-2.5 text-sm" />
+                                        <p className="text-[10px] text-stone-400 mt-1">คัดลอกลิงก์รูปภาพจากอินเทอร์เน็ตหรือวิดีโอสั้นมาวางได้ทันที</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 pt-1">
+                                        <input type="checkbox" name="recommend" id="rec" className="w-4 h-4 text-amber-600 rounded" />
+                                        <label htmlFor="rec" className="text-xs font-bold text-stone-700">ตั้งเป็นเมนูแนะนำ</label>
+                                    </div>
+                                    <button type="submit" className="w-full bg-stone-900 text-white font-bold py-3 rounded-lg hover:bg-stone-800 transition text-sm shadow-md">
+                                        💾 บันทึกเมนู
+                                    </button>
+                                </form>
+                            </div>
+
+                            <h3 className="text-md font-bold text-stone-800 mb-3">จัดการรายการเมนู</h3>
+                            <div className="space-y-2">
+                                {menus.map(menu => (
+                                    <div key={menu.id} className="flex gap-3 bg-white p-3 rounded-lg shadow-sm items-center border border-stone-200">
+                                        <div className="w-14 h-14 bg-stone-100 rounded overflow-hidden shrink-0">
+                                            {menu.type === 'video' ? 
+                                                <video src={menu.mediaUrl} className="w-full h-full object-cover" /> : 
+                                                <img src={menu.mediaUrl} className="w-full h-full object-cover" />
+                                            }
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="font-bold text-stone-800 text-xs truncate">{menu.name}</h4>
+                                            <p className="text-[11px] text-stone-500">{menu.category} • ฿{menu.price}</p>
+                                        </div>
+                                        <button onClick={() => handleDelete(menu.id)} className="text-red-500 text-xs font-semibold px-2.5 py-1.5 bg-red-50 hover:bg-red-100 rounded transition">
+                                            ลบ
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
