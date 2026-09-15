@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <title>เมนูไลฟ์ | จิ๊นโค สุพรรณบุรี — ดูเมนู รูป และวิดีโอล่าสุด</title>
 <meta name="description" content="เมนูไลฟ์ร้านจิ๊นโค สุพรรณบุรี อัปเดตรูป ราคา และวิดีโอล่าสุดโดยตรงจากร้าน กดดูวิดีโอเมนูเด็ดได้ทันที">
 <meta name="robots" content="noindex, follow">
@@ -45,7 +48,7 @@
 <div class="live-cta-strip">
 <h3 style="color:#fff;">อยากสั่งหรือถามเมนูเพิ่มเติม?</h3>
 <p>โทรหรือทักได้เลย ทีมงานร้านจิ๊นโคยินดีแนะนำเมนูให้ตามเมนูที่ท่านชอบ</p>
-<a class="btn btn-primary" href="tel:0855298799">โทร 085-529-8799</a>
+<a class="btn btn-primary" href="tel:0635257143">โทร 063-525-7143</a>
 </div>
 </div>
 </section>
@@ -54,13 +57,11 @@
 <div class="container footer-bottom">© 2026 จิ๊นโค สุพรรณบุรี — ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี จ.สุพรรณบุรี 72000</div>
 </footer>
 
-<!-- Modal สำหรับเล่นวิดีโอ/ดูภาพขยาย -->
-<div id="liveModalOverlay" class="live-modal-overlay">
+<!-- Modal: รายละเอียดเมนู (คลิกที่การ์ดเมนูเพื่อดู) -->
+<div id="itemDetailOverlay" class="live-modal-overlay">
 <div class="live-modal-inner">
-<div class="live-modal-box">
-<div id="liveModalMedia" class="modal-media"></div>
-</div>
-<button id="liveModalClose" class="live-modal-close" aria-label="ปิด">✕</button>
+<div class="item-detail-box" id="itemDetailBody"></div>
+<button id="itemDetailClose" class="live-modal-close" aria-label="ปิด">✕</button>
 </div>
 </div>
 

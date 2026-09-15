@@ -3,39 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>จิ๊นโค สุพรรณบุรี | ร้านอาหารเหนือแท้ ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม ถนนขุนช้าง</title>
-<meta name="description" content="จิ๊นโค สุพรรณบุรี ร้านอาหารเหนือแท้ต้นตำรับ ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมือง จ.สุพรรณบุรี เมนูเด่น ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม แคปหมู เริ่มต้นหลักสิบบาท เปิดตุลาคม 2569" />
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<title>จิ๊นโค สุพรรณบุรี | ร้านอาหารเหนือแท้ ไส้อั่วโฮมเมด พริกหนุ่มปิ้งตำ ถนนขุนช้าง</title>
+<meta name="description" content="จิ๊นโค สุพรรณบุรี ร้านอาหารเหนือแท้ต้นตำรับ ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมือง จ.สุพรรณบุรี เมนูเด่น ไส้อั่วโฮมเมด พริกหนุ่มปิ้งตำ ป่นน้ำปู๋สูตรเค้ง แคบหมู เริ่มต้นหลักสิบบาท เปิดตุลาคม 2569" />
 <link rel="canonical" href="https://jinko-menu.netlify.app/">
 <meta property="og:type" content="restaurant">
 <meta property="og:title" content="จิ๊นโค สุพรรณบุรี | ร้านอาหารเหนือแท้ต้นตำรับ">
-<meta property="og:description" content="อาหารเหนือแท้ต้นตำรับ ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม กลางเมืองสุพรรณบุรี ถนนขุนช้าง เปิดตุลาคม 2569">
+<meta property="og:description" content="อาหารเหนือแท้ต้นตำรับ ไส้อั่วโฮมเมด พริกหนุ่มปิ้งตำ ป่นน้ำปู๋สูตรเค้ง กลางเมืองสุพรรณบุรี ถนนขุนช้าง เปิดตุลาคม 2569">
 <meta property="og:url" content="https://jinko-menu.netlify.app/">
-<meta property="og:image" content="https://jinko-menu.netlify.app/images/og-image.jpg">
+<meta property="og:image" content="https://jinko-menu.netlify.app/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg">
 <meta property="og:locale" content="th_TH">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="js/site-content.js" defer></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: {
-            red: "#a8623c",
-            reddark: "#8a4d2d",
-            gold: "#d9a765",
-            wood: "#8c6444",
-            cream: "#fdf6ec",
-            cream2: "#f6e8d3",
-            text: "#4a3626",
-            textsoft: "#7a6551",
-          },
-        },
-      },
-    },
-  };
-</script>
+<!-- css/tailwind-built.css คอมไพล์ไว้ล่วงหน้าแล้ว (ไม่ใช้ Tailwind CDN แบบเดิมเพราะโหลดช้า/ไม่เหมาะกับเว็บจริง)
+     ถ้าแก้/เพิ่ม class ของ Tailwind ในไฟล์นี้ ต้องรันคำสั่ง build ใหม่ก่อน deploy — ดูวิธีทำใน README.md -->
+<link rel="stylesheet" href="css/tailwind-built.css">
 <style>
   * { font-family: 'Noto Sans Thai', Prompt, system-ui, sans-serif; }
   .font-display { font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif; }
@@ -44,15 +29,181 @@
   html { scroll-behavior: smooth; }
   .nav-link.active { background-color: #a8623c; color: #fff; }
   .nav-link:not(.active):hover { background-color: #f6e8d3; }
+
+  /* ===== เมนูไลฟ์แบบเต็ม (ทั้งหมด + แท็บหมวดหมู่) — ใช้ร่วมกับ js/menu-live.js =====
+     สโคปเฉพาะคลาส .live-* / .item-detail-* เพื่อไม่ชนกับสไตล์ Tailwind ส่วนอื่นของหน้านี้ */
+  :root {
+    --color-red: #a8623c;
+    --color-red-dark: #8a4d2d;
+    --color-gold: #d9a765;
+    --color-wood: #8c6444;
+    --color-cream: #fdf6ec;
+    --color-cream-2: #f6e8d3;
+    --color-text: #4a3626;
+    --color-text-soft: #7a6551;
+    --radius: 14px;
+    --shadow: 0 6px 20px rgba(122, 88, 57, 0.14);
+  }
+  #liveMenuStatus.home-live-status {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--color-cream-2);
+    color: var(--color-red-dark);
+    border-radius: 999px; padding: 0.3rem 0.9rem;
+    font-size: 0.76rem; font-weight: 700; margin: 0.9rem 0 1.1rem;
+  }
+  #liveMenuStatus.home-live-status .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4caf50; display: inline-block;
+  }
+  .live-menu-tabs {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0 0 1.6rem;
+  }
+  .live-menu-tabs button {
+    border: 2px solid var(--color-gold);
+    background: #fff;
+    color: var(--color-red-dark);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+  }
+  .live-menu-tabs button:hover { background: var(--color-cream-2); }
+  .live-menu-tabs button.active { background: var(--color-red); border-color: var(--color-red); color: #fff; }
+  .live-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.4rem;
+  }
+  .live-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .live-card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(122,88,57,0.22); }
+  .live-card .thumb {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color-cream-2), var(--color-cream));
+  }
+  .live-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s ease; }
+  .live-card:hover .thumb img { transform: scale(1.06); }
+  .live-card .thumb-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .live-card .thumb-video.playing { opacity: 1; }
+  .live-card .play-btn {
+    position: absolute; top: 0.6rem; right: 0.6rem;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(43,27,18,0.55);
+    backdrop-filter: blur(2px);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .live-card .play-btn::after { content: '▶'; margin-left: 2px; }
+  .live-card .play-btn.is-playing::after { content: '❚❚'; margin-left: 0; font-size: 0.62rem; }
+  .live-card .ribbon-featured {
+    position: absolute; top: 0.7rem; left: 0.7rem;
+    background: var(--color-gold);
+    color: #2b1b12;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .live-card .live-body { padding: 0.95rem 1.1rem 1.1rem; cursor: pointer; transition: background 0.15s ease; }
+  .live-card .live-body:hover { background: var(--color-cream-2); }
+  .live-card .live-body h3 { font-size: 1.02rem; display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; margin-bottom: 0.3rem; font-family: 'Prompt','Noto Sans Thai',sans-serif; color: var(--color-red-dark); }
+  .live-card .live-body .price { color: var(--color-red); font-weight: 700; white-space: nowrap; font-size: 0.95rem; }
+  .live-card .live-body p { color: var(--color-text-soft); font-size: 0.88rem; margin: 0; }
+  .live-card .detail-hint { display: inline-block; margin-top: 0.5rem; font-size: 0.76rem; font-weight: 700; color: var(--color-red); }
+  .live-card .detail-hint::after { content: ' →'; }
+  .live-empty { text-align: center; color: var(--color-text-soft); padding: 3rem 1rem; }
+  .live-skeleton .thumb, .live-skeleton .sk-line {
+    background: linear-gradient(90deg, var(--color-cream-2) 25%, #efe1c8 37%, var(--color-cream-2) 63%);
+    background-size: 400% 100%;
+    animation: sk-shimmer 1.4s ease infinite;
+  }
+  .live-skeleton .sk-line { height: 0.8rem; border-radius: 6px; margin: 0.9rem 1.1rem 0; }
+  .live-skeleton .sk-line.short { width: 55%; margin-bottom: 1.1rem; }
+  @keyframes sk-shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+  /* Modal รายละเอียดเมนู */
+  .live-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(20,12,7,0.82);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 999;
+    padding: 1.2rem;
+  }
+  .live-modal-overlay.open { display: flex; }
+  .live-modal-inner { position: relative; }
+  .live-modal-close {
+    position: absolute; top: -0.9rem; right: -0.9rem;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #fff; color: var(--color-text);
+    border: none; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .item-detail-box {
+    display: flex; flex-direction: row;
+    width: min(760px, 100%);
+    max-height: min(560px, 82vh);
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .item-detail-box .detail-media { flex: 1 1 46%; min-width: 0; aspect-ratio: 1 / 1; background: #000; }
+  .item-detail-box .detail-media img, .item-detail-box .detail-media video, .item-detail-box .detail-media iframe {
+    width: 100%; height: 100%; object-fit: cover; border: 0; display: block;
+  }
+  .item-detail-box .detail-info { flex: 1 1 54%; min-width: 0; padding: 1.5rem 1.6rem; overflow-y: auto; color: var(--color-text); }
+  .item-detail-box .detail-info h3 { margin: 0.3rem 0 0.4rem; font-size: 1.3rem; font-family: 'Prompt','Noto Sans Thai',sans-serif; color: var(--color-red-dark); }
+  .item-detail-box .detail-badge { display: inline-block; background: var(--color-gold); color: #2b1b12; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 999px; }
+  .item-detail-box .detail-price { color: var(--color-red); font-weight: 800; font-size: 1.15rem; margin: 0 0 0.7rem; }
+  .item-detail-box .detail-desc { color: var(--color-text-soft); font-size: 0.95rem; line-height: 1.7; margin: 0 0 1.1rem; }
+  .item-detail-box .detail-call { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--color-red); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 0.65rem 1.2rem; border-radius: 999px; text-decoration: none; }
+  .item-detail-box .detail-call:hover { background: var(--color-red-dark); }
+  @media (max-width: 640px) {
+    .item-detail-box { flex-direction: column; max-height: min(640px, 88vh); overflow-y: auto; }
+    .item-detail-box .detail-media { aspect-ratio: 16/10; }
+    .item-detail-box .detail-info { overflow-y: visible; padding: 1.2rem 1.2rem 1.4rem; }
+    .live-card .play-btn { width: 38px; height: 38px; }
+    .live-menu-tabs { gap: 0.45rem; margin-bottom: 1.2rem; }
+    .live-menu-tabs button { padding: 0.45rem 0.85rem; font-size: 0.8rem; }
+    .live-grid { gap: 0.9rem; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .live-card .live-body { padding: 0.75rem 0.85rem 0.9rem; }
+    .live-card .live-body h3 { font-size: 0.92rem; }
+    .live-card .live-body p { font-size: 0.82rem; }
+  }
 </style>
 <script type="application/ld+json">
 {
 "@context": "https://schema.org",
 "@type": "Restaurant",
 "name": "จิ๊นโค สุพรรณบุรี",
-"image": "https://jinko-menu.netlify.app/images/og-image.jpg",
+"image": "https://jinko-menu.netlify.app/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg",
 "url": "https://jinko-menu.netlify.app/",
-"telephone": "+66855298799",
+"telephone": "+66635257143",
 "servesCuisine": ["Northern Thai", "Thai", "อาหารเหนือ"],
 "priceRange": "฿",
 "address": {
@@ -81,10 +232,10 @@
 "mainEntity": [
 {
 "@type": "Question",
-"name": "ลาบเหนือ คืออะไร ต่างจากลาบอีสานอย่างไร",
+"name": "จิ๊น คืออะไร",
 "acceptedAnswer": {
 "@type": "Answer",
-"text": "ลาบเหนือ คือลาบสไตล์ล้านนาที่ใช้เนื้อสับผสมเครื่องในและเลือดสับ ปรุงด้วยพริกลาบคั่วสมุนไพรหลายชนิด รสชาติเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน และมักกินคู่กับผักสดพื้นบ้าน"
+"text": "จิ๊นโค คือเนื้อวัว ร้านเรามีเมนูเนื้อวัวแบบอาหารเหนือคั่วสมุนไพรหลายชนิด รสชาติเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน เป็นสไตล์อาหารพื้นบ้านภาคเหนือ"
 }
 },
 {
@@ -126,8 +277,8 @@
         <button class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="about">ℹ️ <span class="hidden md:inline">เกี่ยวกับเรา</span></button>
         <button class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="contact">📍 <span class="hidden md:inline">แผนที่ & ติดต่อ</span></button>
       </div>
-      <a href="tel:0855298799" class="hidden shrink-0 items-center gap-1.5 rounded-full bg-brand-red px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-reddark md:flex">
-        📞 085-529-8799
+      <a href="tel:0635257143" class="hidden shrink-0 items-center gap-1.5 rounded-full bg-brand-red px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-reddark md:flex">
+        📞 063-525-7143
       </a>
     </div>
   </div>
@@ -144,8 +295,9 @@
         ปรุงสดใหม่ทุกวัน เหมาะกับมื้อกลางวัน มื้อเย็น หรือสั่งกลับบ้าน
       </p>
 
-      <h2 class="mb-4 mt-7 font-display text-base font-semibold text-brand-wood">ลาบเหนือ & กับแกล้มอาหารเหนือ</h2>
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" id="menuGrid"></div>
+      <div id="liveMenuStatus" class="home-live-status"></div>
+      <div id="liveMenuTabs" class="live-menu-tabs"></div>
+      <div id="liveMenuGrid" class="live-grid"></div>
 
       <p class="mt-7 rounded-xl bg-brand-cream2 px-4 py-3 text-center text-sm text-brand-textsoft">
         พิมพ์ค้นหาว่า <strong class="font-semibold text-brand-red">"จิ้นโค"</strong> หรือ <strong class="font-semibold text-brand-red">"จินโค"</strong> ก็เจอร้านเราได้เช่นกัน
@@ -159,7 +311,7 @@
     <div class="mx-auto max-w-5xl px-4 md:px-6">
       <div class="overflow-hidden rounded-2xl">
         <div class="relative h-56 w-full overflow-hidden md:h-72">
-          <img data-cms="home-hero-image" src="https://picsum.photos/seed/north-thai-food-spread-hero/1600/700" alt="สำรับอาหารเหนือแท้ต้นตำรับ ร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" />
+          <img data-cms="home-hero-image" src="images/hero-spread.svg" alt="สำรับอาหารเหนือแท้ต้นตำรับ ร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#2c1d12]/85 via-[#2c1d12]/20 to-transparent"></div>
           <div class="absolute inset-x-0 bottom-0 px-5 pb-5 md:px-8 md:pb-6">
             <p class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">ร้านใหม่ อาหารเหนือแท้ กลางเมืองสุพรรณบุรี</p>
@@ -170,7 +322,7 @@
 
       <p class="mt-6 max-w-3xl text-sm leading-relaxed text-brand-textsoft md:text-base" data-cms="home-hero-lead">
         ในตัวเมืองสุพรรณบุรียังมีร้าน<strong class="font-semibold text-brand-red">อาหารเหนือสุพรรณบุรี</strong>ที่ทำแบบต้นตำรับไม่มากนัก
-        เราตั้งใจนำสูตร<strong class="font-semibold text-brand-red">ลาบเหนือ</strong> ไส้อั่ว และน้ำพริกหนุ่มแบบดั้งเดิมมาเสิร์ฟในบรรยากาศร้านบ้านๆ กันเอง
+        เราตั้งใจนำสูตร<strong class="font-semibold text-brand-red">ไส้อั่วโฮมเมด</strong> พริกหนุ่มปิ้งตำ และป่นน้ำปู๋สูตรเค้งแบบดั้งเดิมมาเสิร์ฟในบรรยากาศร้านบ้านๆ กันเอง
         ราคาจับต้องได้ เพื่อให้คนสุพรรณและนักเดินทางผ่านทางได้ลิ้มรสอาหารเหนือแท้โดยไม่ต้องเดินทางไกลถึงภาคเหนือ
       </p>
 
@@ -211,7 +363,7 @@
           </p>
         </div>
         <div class="overflow-hidden rounded-2xl">
-          <img data-cms="about-hero-image" src="https://picsum.photos/seed/north-thai-restaurant-owner-kitchen/900/700" alt="เรื่องราวร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" />
+          <img data-cms="about-hero-image" src="images/dish-laab.svg" alt="เรื่องราวร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" />
         </div>
       </div>
 
@@ -274,7 +426,7 @@
               <span class="mt-0.5 text-lg">📞</span>
               <div>
                 <p class="font-display text-sm font-semibold">โทร / LINE</p>
-                <a href="tel:0855298799" class="mt-0.5 block text-sm font-medium text-brand-red">085-529-8799</a>
+                <a href="tel:0635257143" class="mt-0.5 block text-sm font-medium text-brand-red">063-525-7143</a>
               </div>
             </div>
           </div>
@@ -296,8 +448,8 @@
               </div>
             </div>
           </div>
-          <a href="tel:0855298799" class="flex items-center justify-center gap-2 rounded-xl bg-brand-red py-3 font-display text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-reddark">
-            📞 โทร 085-529-8799
+          <a href="tel:0635257143" class="flex items-center justify-center gap-2 rounded-xl bg-brand-red py-3 font-display text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-reddark">
+            📞 โทร 063-525-7143
           </a>
         </div>
 
@@ -313,7 +465,7 @@
     <div class="mx-auto grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-3">
       <div>
         <p class="font-display text-base font-bold text-white">จิ๊นโค สุพรรณบุรี</p>
-        <p class="mt-2 text-sm leading-relaxed text-[#c9b79c]">ร้านอาหารเหนือแท้ต้นตำรับ ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม แคปหมู กลางเมืองสุพรรณบุรี</p>
+        <p class="mt-2 text-sm leading-relaxed text-[#c9b79c]">ร้านอาหารเหนือแท้ต้นตำรับ ไส้อั่วโฮมเมด พริกหนุ่มปิ้งตำ ป่นน้ำปู๋สูตรเค้ง แคบหมู กลางเมืองสุพรรณบุรี</p>
       </div>
       <div>
         <p class="font-display text-sm font-semibold text-white">เมนูลัด</p>
@@ -328,7 +480,7 @@
       <div>
         <p class="font-display text-sm font-semibold text-white">ติดต่อ</p>
         <div class="mt-2 flex flex-col gap-1.5 text-sm text-[#c9b79c]">
-          <a href="tel:0855298799" class="hover:text-white">085-529-8799</a>
+          <a href="tel:0635257143" class="hover:text-white">063-525-7143</a>
           <a href="#contact" class="w-fit text-left hover:text-white">แผนที่ & เส้นทาง</a>
         </div>
       </div>
@@ -338,99 +490,39 @@
     </p>
   </footer>
 
-<script>
-  // Set "video" to the dish's own video file URL (mp4) to enable the
-  // hover-to-play (desktop) / tap-to-play (mobile) preview on that card.
-  // Leave it null for items that don't have a video yet — they'll just
-  // show the photo as usual. The one below is a placeholder sample clip;
-  // replace it with the real uploaded video of the dish.
-  const MENU_ITEMS = [
-    { name: "ลาบเหนือ", tags: ["เมนูซิกเนเจอร์", "แนะนำ"], desc: "เนื้อสับคั่วพริกลาบสมุนไพรล้านนา หอมเครื่องเทศ รสจัดจ้าน เมนูซิกเนเจอร์ของร้าน สั่งได้ทั้งลาบหมูและลาบเนื้อ", seed: "north-thai-laab-neua", video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" },
-    { name: "ไส้อั่ว", tags: [], desc: "ไส้อั่วสูตรเหนือแท้ อัดแน่นด้วยสมุนไพรและพริกแกง ย่างหอมกรุ่นทั้งไม้", seed: "north-thai-saiua-sausage", video: null },
-    { name: "น้ำพริกหนุ่ม", tags: [], desc: "พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคปหมูและผักสดตามฤดูกาล", seed: "north-thai-namprik-num", video: null },
-    { name: "แคปหมู", tags: [], desc: "แคปหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้ ทานเล่นหรือแกล้มน้ำพริกก็เข้ากัน", seed: "north-thai-kaep-moo-crackling", video: null },
-    { name: "สามชั้นทอด", tags: [], desc: "หมูสามชั้นทอดกรอบนอกนุ่มใน เสิร์ฟพร้อมน้ำจิ้มแจ่วรสจัด", seed: "thai-pork-belly-fried", video: null },
-    { name: "ไก่ทอด", tags: [], desc: "ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน", seed: "thai-herb-fried-chicken", video: null },
-  ];
+  <!-- Modal: รายละเอียดเมนู (คลิกที่การ์ดเมนูเพื่อดู) ใช้ร่วมกับ js/menu-live.js -->
+  <div id="itemDetailOverlay" class="live-modal-overlay">
+    <div class="live-modal-inner">
+      <div class="item-detail-box" id="itemDetailBody"></div>
+      <button id="itemDetailClose" class="live-modal-close" aria-label="ปิด">✕</button>
+    </div>
+  </div>
 
-  const FAQS = [
-    { q: "ลาบเหนือ คืออะไร ต่างจากลาบอีสานอย่างไร", a: "ลาบเหนือใช้เนื้อสับผสมเครื่องในและเลือดสับ ปรุงด้วยพริกลาบคั่วสมุนไพรล้านนา รสเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน" },
+  <script src="js/menu-live.js"></script>
+<script>
+  const FAQ_FALLBACK = [
+    { q: "จิ๊น คืออะไร", a: "จิ๊นโค คือเนื้อวัว ร้านเรามีเมนูเนื้อวัวแบบอาหารเหนือคั่วสมุนไพรหลายชนิด รสชาติเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน เป็นสไตล์อาหารพื้นบ้านภาคเหนือ" },
     { q: "ร้านจิ๊นโค สุพรรณบุรี อยู่ที่ไหน", a: "ตั้งอยู่บนถนนขุนช้าง ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี ในซอยติดร้านป้ารัตน์ อาหารตามสั่ง" },
     { q: "ร้านเปิดวันไหน", a: "มีกำหนดเปิดให้บริการเดือนตุลาคม 2569 เวลาทำการโดยประมาณ ทุกวัน 08:00–20:00 น." },
   ];
 
-  const menuGrid = document.getElementById("menuGrid");
-  MENU_ITEMS.forEach((item) => {
-    const tagsHtml = item.tags.map(t =>
-      `<span class="flex items-center gap-1 rounded-r-full bg-brand-red py-1 pl-3 pr-3 text-xs font-semibold text-white shadow-sm">${t === "แนะนำ" ? "🔥 " : ""}${t}</span>`
-    ).join("");
-    const videoHtml = item.video ? `
-          <video class="media-video pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline webkit-playsinline="true" disablePictureInPicture disableRemotePlayback preload="none">
-            <source src="${item.video}" type="video/mp4" />
-          </video>
-          <button type="button" class="media-play-btn absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/55 text-white shadow-md backdrop-blur transition-transform active:scale-95 md:hidden" aria-label="เล่นวิดีโอ ${item.name}">
-            <svg class="play-icon h-4 w-4 translate-x-[1px]" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="pause-icon hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-          </button>` : "";
-    menuGrid.insertAdjacentHTML("beforeend", `
-      <div class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#eaddc4]">
-        <div class="media-frame group relative aspect-square w-full overflow-hidden md:aspect-video" ${item.video ? "data-video-card" : ""}>
-          <img src="https://picsum.photos/seed/${item.seed}/640/640" alt="${item.name} ร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" loading="lazy" />
-          ${videoHtml}
-          ${item.tags.length ? `<div class="absolute left-0 top-3 flex flex-col items-start gap-1">${tagsHtml}</div>` : ""}
-        </div>
-        <div class="flex flex-1 flex-col gap-1.5 px-4 pb-4 pt-4">
-          <div class="flex items-start justify-between gap-2">
-            <h3 class="font-display text-base font-semibold text-brand-text">${item.name}</h3>
-            <span class="shrink-0 pt-0.5 text-xs font-medium text-[#a8a08f]">เริ่มต้น</span>
-          </div>
-          <p class="text-sm leading-relaxed text-brand-textsoft">${item.desc}</p>
-        </div>
-      </div>
-    `);
-  });
-
-  // Video preview behaviour: hover-to-play on desktop (mouse/trackpad),
-  // tap-the-button-to-play on mobile/touch. The video always stays inside
-  // its original card frame — no lightbox, no fullscreen expansion.
-  const hasFineHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  document.querySelectorAll("[data-video-card]").forEach((frame) => {
-    const video = frame.querySelector(".media-video");
-    const btn = frame.querySelector(".media-play-btn");
-    const playIcon = btn.querySelector(".play-icon");
-    const pauseIcon = btn.querySelector(".pause-icon");
-    let isPlaying = false;
-
-    const play = () => {
-      video.classList.remove("opacity-0");
-      video.classList.add("opacity-100");
-      video.currentTime = 0;
-      video.play().catch(() => {});
-      isPlaying = true;
-      playIcon.classList.add("hidden");
-      pauseIcon.classList.remove("hidden");
-    };
-    const stop = () => {
-      video.pause();
-      video.classList.remove("opacity-100");
-      video.classList.add("opacity-0");
-      isPlaying = false;
-      playIcon.classList.remove("hidden");
-      pauseIcon.classList.add("hidden");
-    };
-
-    if (hasFineHover) {
-      frame.addEventListener("mouseenter", play);
-      frame.addEventListener("mouseleave", stop);
+  // ดึง FAQ จริงจาก /api/content (บันทึกผ่านหน้า /admin) เพื่อให้ตรงกับข้อมูลในระบบแอดมินเสมอ
+  async function loadFaqItems() {
+    try {
+      const res = await fetch("/api/content", { cache: "no-store" });
+      if (!res.ok) throw new Error("bad status " + res.status);
+      const data = await res.json();
+      const items = Array.isArray(data.faq) ? data.faq.filter(f => f && f.question && f.answer) : [];
+      if (!items.length) throw new Error("empty faq");
+      return items.map(f => ({ q: f.question, a: f.answer }));
+    } catch (err) {
+      console.warn("โหลด FAQ จาก /api/content ไม่สำเร็จ ใช้ข้อมูลตัวอย่างแทน:", err);
+      return FAQ_FALLBACK;
     }
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      isPlaying ? stop() : play();
-    });
-  });
+  }
 
   const faqList = document.getElementById("faqList");
+  function renderFaq(FAQS) {
   FAQS.forEach((f, i) => {
     faqList.insertAdjacentHTML("beforeend", `
       <div class="overflow-hidden rounded-xl bg-white ring-1 ring-[#eaddc4]">
@@ -455,6 +547,8 @@
       chevron.style.transform = "rotate(180deg)";
     }
   });
+  }
+  loadFaqItems().then(renderFaq);
 
   const navLinks = document.querySelectorAll(".nav-link");
   navLinks.forEach(btn => {
