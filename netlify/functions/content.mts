@@ -55,6 +55,33 @@ function json(data, status = 200) {
   });
 }
 
+function normalizeAnnouncement(value) {
+  const text = String(value || "").trim();
+  if (/^🎉\s*เตรียมเปิดร้าน\s+/.test(text) && !/ตุลาคม\s*2569/.test(text) && /สุพรรณบุรี/.test(text)) {
+    const place = text.replace(/^🎉\s*เตรียมเปิดร้าน\s*/, "").replace(/\s*สุพรรณบุรี.*$/, "").trim();
+    return `🎉 เตรียมเปิดร้าน ตุลาคม 2569 ที่${place} สุพรรณบุรี — กดติดตามไว้ก่อนใครที่นี่`;
+  }
+  return value;
+}
+
+function normalizeFaqItems(items) {
+  if (!Array.isArray(items)) return items;
+  return items.map((f) => ({
+    ...f,
+    question: /^จิ๊น\s+คืออะไร/.test(String(f?.question || "")) ? "จิ๊น คืออะไร" : f?.question,
+    answer: String(f?.answer || "").replace(/วัวฟวึ่ง/g, "วัว ซึ่ง")
+  }));
+}
+
+function normalizeContent(content) {
+  if (!content || typeof content !== "object") return content;
+  return {
+    ...content,
+    announceBar: normalizeAnnouncement(content.announceBar),
+    faq: normalizeFaqItems(content.faq)
+  };
+}
+
 // ตรวจรูปแบบข้อมูลคร่าวๆ ก่อนบันทึก ป้องกันข้อมูลพังทั้งเว็บ
 function isValidContent(body) {
   if (!body || typeof body !== "object") return false;
@@ -73,10 +100,10 @@ export default async (req: Request) => {
   if (req.method === "GET") {
     let data = await store.get(KEY, { type: "json" });
     if (!data) {
-      data = DEFAULT_CONTENT;
+      data = normalizeContent(DEFAULT_CONTENT);
       await store.setJSON(KEY, data);
     }
-    return json(data);
+    return json(normalizeContent(data));
   }
 
   if (req.method === "POST") {
@@ -112,7 +139,7 @@ export default async (req: Request) => {
       return json({ error: "รูปแบบข้อมูลไม่ถูกต้อง กรุณาลองใหม่" }, 400);
     }
 
-    await store.setJSON(KEY, payload);
+    await store.setJSON(KEY, normalizeContent(payload));
     return json({ ok: true });
   }
 

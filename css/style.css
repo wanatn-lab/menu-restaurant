@@ -364,6 +364,7 @@ footer.site-footer li { margin-bottom: 0.4rem; }
   position: absolute; width: 1px; height: 1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
 }
+body.modal-open { overflow: hidden; }
 
 /* ===================================================================
    เมนูไลฟ์ (menu-live.html) — โหลดข้อมูลสดจาก Google Sheet

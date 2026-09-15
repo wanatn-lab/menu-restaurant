@@ -18,15 +18,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="js/site-content.js" defer></script>
-<!-- css/tailwind-built.css คอมไพล์ไว้ล่วงหน้าแล้ว (ไม่ใช้ Tailwind CDN แบบเดิมเพราะโหลดช้า/ไม่เหมาะกับเว็บจริง)
-     ถ้าแก้/เพิ่ม class ของ Tailwind ในไฟล์นี้ ต้องรันคำสั่ง build ใหม่ก่อน deploy — ดูวิธีทำใน README.md -->
-<link rel="stylesheet" href="css/tailwind-built.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            red: "#a8623c", reddark: "#8a4d2d", gold: "#d9a765", wood: "#8c6444",
+            cream: "#fdf6ec", cream2: "#f6e8d3", text: "#4a3626", textsoft: "#7a6551"
+          }
+        }
+      }
+    }
+  };
+</script>
 <style>
   * { font-family: 'Noto Sans Thai', Prompt, system-ui, sans-serif; }
   .font-display { font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   html { scroll-behavior: smooth; }
+  body.modal-open { overflow: hidden; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   .nav-link.active { background-color: #a8623c; color: #fff; }
   .nav-link:not(.active):hover { background-color: #f6e8d3; }
 
@@ -219,9 +233,7 @@
 "latitude": "14.476954",
 "longitude": "100.1163608"
 },
-"openingHours": "Mo-Su 08:00-20:00",
 "menu": "https://jinko-menu.netlify.app/menu.html",
-"acceptsReservations": "True",
 "sameAs": ["https://maps.app.goo.gl/RwttgXsd8FBZVneh6"]
 }
 </script>
@@ -268,14 +280,14 @@
   <!-- Sticky nav -->
   <div class="sticky top-0 z-40 border-b border-[#eaddc4] bg-brand-cream/95 backdrop-blur">
     <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 md:px-6">
-      <a href="#top" class="flex shrink-0 items-center gap-2 font-display text-sm font-bold text-brand-red md:text-base">
+      <a href="#top" aria-label="จิ๊นโค สุพรรณบุรี หน้าแรก" class="flex shrink-0 items-center gap-2 font-display text-sm font-bold text-brand-red md:text-base">
         <span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-red font-display text-sm text-white">จ</span>
         <span class="hidden sm:inline">จิ๊นโค สุพรรณบุรี</span>
       </a>
       <div class="no-scrollbar flex flex-1 justify-end gap-1 overflow-x-auto md:justify-center md:gap-2" id="navLinks">
-        <button class="nav-link active flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="menu">🍽️ <span class="hidden md:inline">เมนูอาหาร</span></button>
-        <button class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="about">ℹ️ <span class="hidden md:inline">เกี่ยวกับเรา</span></button>
-        <button class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="contact">📍 <span class="hidden md:inline">แผนที่ & ติดต่อ</span></button>
+        <button aria-label="เมนูอาหาร" class="nav-link active flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="menu">🍽️ <span class="hidden md:inline">เมนูอาหาร</span></button>
+        <button aria-label="เกี่ยวกับเรา" class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="about">ℹ️ <span class="hidden md:inline">เกี่ยวกับเรา</span></button>
+        <button aria-label="แผนที่และติดต่อ" class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="contact">📍 <span class="hidden md:inline">แผนที่ & ติดต่อ</span></button>
       </div>
       <a href="tel:0635257143" class="hidden shrink-0 items-center gap-1.5 rounded-full bg-brand-red px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-reddark md:flex">
         📞 063-525-7143
@@ -491,8 +503,9 @@
   </footer>
 
   <!-- Modal: รายละเอียดเมนู (คลิกที่การ์ดเมนูเพื่อดู) ใช้ร่วมกับ js/menu-live.js -->
-  <div id="itemDetailOverlay" class="live-modal-overlay">
+  <div id="itemDetailOverlay" class="live-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="liveModalTitle" tabindex="-1">
     <div class="live-modal-inner">
+      <h2 id="liveModalTitle" class="sr-only">รายละเอียดเมนู</h2>
       <div class="item-detail-box" id="itemDetailBody"></div>
       <button id="itemDetailClose" class="live-modal-close" aria-label="ปิด">✕</button>
     </div>
@@ -503,8 +516,15 @@
   const FAQ_FALLBACK = [
     { q: "จิ๊น คืออะไร", a: "จิ๊นโค คือเนื้อวัว ร้านเรามีเมนูเนื้อวัวแบบอาหารเหนือคั่วสมุนไพรหลายชนิด รสชาติเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน เป็นสไตล์อาหารพื้นบ้านภาคเหนือ" },
     { q: "ร้านจิ๊นโค สุพรรณบุรี อยู่ที่ไหน", a: "ตั้งอยู่บนถนนขุนช้าง ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี ในซอยติดร้านป้ารัตน์ อาหารตามสั่ง" },
-    { q: "ร้านเปิดวันไหน", a: "มีกำหนดเปิดให้บริการเดือนตุลาคม 2569 เวลาทำการโดยประมาณ ทุกวัน 08:00–20:00 น." },
+    { q: "ร้านจิ๊นโค สุพรรณบุรี เปิดวันไหน", a: "มีกำหนดเปิดให้บริการเดือนตุลาคม 2569 เวลาทำการโดยประมาณ ทุกวัน 08:00–20:00 น." },
   ];
+
+  function normalizeFaqItems(items) {
+    return items.map(f => ({
+      q: /^จิ๊น\s+คืออะไร/.test(String(f.q || "")) ? "จิ๊น คืออะไร" : String(f.q || ""),
+      a: String(f.a || "").replace(/วัวฟวึ่ง/g, "วัว ซึ่ง")
+    }));
+  }
 
   // ดึง FAQ จริงจาก /api/content (บันทึกผ่านหน้า /admin) เพื่อให้ตรงกับข้อมูลในระบบแอดมินเสมอ
   async function loadFaqItems() {
@@ -514,7 +534,7 @@
       const data = await res.json();
       const items = Array.isArray(data.faq) ? data.faq.filter(f => f && f.question && f.answer) : [];
       if (!items.length) throw new Error("empty faq");
-      return items.map(f => ({ q: f.question, a: f.answer }));
+      return normalizeFaqItems(items.map(f => ({ q: f.question, a: f.answer })));
     } catch (err) {
       console.warn("โหลด FAQ จาก /api/content ไม่สำเร็จ ใช้ข้อมูลตัวอย่างแทน:", err);
       return FAQ_FALLBACK;
@@ -523,14 +543,15 @@
 
   const faqList = document.getElementById("faqList");
   function renderFaq(FAQS) {
+  FAQS = normalizeFaqItems(FAQS);
   FAQS.forEach((f, i) => {
     faqList.insertAdjacentHTML("beforeend", `
       <div class="overflow-hidden rounded-xl bg-white ring-1 ring-[#eaddc4]">
-        <button class="faq-toggle flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left" data-index="${i}">
+        <button class="faq-toggle flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left" data-index="${i}" aria-expanded="false" aria-controls="faq-answer-${i}">
           <span class="font-display text-sm font-semibold text-brand-text md:text-base">${f.q}</span>
           <span class="faq-chevron shrink-0 text-brand-red transition-transform">▾</span>
         </button>
-        <p class="faq-answer hidden px-4 pb-4 text-sm leading-relaxed text-brand-textsoft">${f.a}</p>
+        <p id="faq-answer-${i}" class="faq-answer hidden px-4 pb-4 text-sm leading-relaxed text-brand-textsoft">${f.a}</p>
       </div>
     `);
   });
@@ -542,9 +563,11 @@
     const isOpen = !answer.classList.contains("hidden");
     faqList.querySelectorAll(".faq-answer").forEach(a => a.classList.add("hidden"));
     faqList.querySelectorAll(".faq-chevron").forEach(c => c.style.transform = "");
+    faqList.querySelectorAll(".faq-toggle").forEach(b => b.setAttribute("aria-expanded", "false"));
     if (!isOpen) {
       answer.classList.remove("hidden");
       chevron.style.transform = "rotate(180deg)";
+      btn.setAttribute("aria-expanded", "true");
     }
   });
   }

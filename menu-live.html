@@ -36,7 +36,7 @@
 <div class="container">
 <div id="liveMenuStatus" class="live-dot"><span class="dot"></span> กำลังโหลดเมนู…</div>
 <h1>เมนูไลฟ์ จิ๊นโค สุพรรณบุรี</h1>
-<p class="lead">หน้านี้ทำไว้ให้ส่งลิงก์ให้ลูกค้าดูได้ทันที รูป ราคา และวิดีโอจะอัปเดตอัตโนมัติทุกครั้งที่เจ้าของร้านแก้ในชีตเมนู — กดที่รูปเมนูที่มีไอคอน ▶ เพื่อดูวิดีโอ</p>
+<p class="lead">หน้านี้ทำไว้ให้ส่งลิงก์ให้ลูกค้าดูได้ทันที รูป ราคา และวิดีโอจะอัปเดตตามข้อมูลล่าสุดของร้าน — กดที่รูปเมนูที่มีไอคอน ▶ เพื่อดูวิดีโอ</p>
 </div>
 </section>
 
@@ -58,8 +58,9 @@
 </footer>
 
 <!-- Modal: รายละเอียดเมนู (คลิกที่การ์ดเมนูเพื่อดู) -->
-<div id="itemDetailOverlay" class="live-modal-overlay">
+<div id="itemDetailOverlay" class="live-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="liveModalTitle" tabindex="-1">
 <div class="live-modal-inner">
+<h2 id="liveModalTitle" class="sr-only">รายละเอียดเมนู</h2>
 <div class="item-detail-box" id="itemDetailBody"></div>
 <button id="itemDetailClose" class="live-modal-close" aria-label="ปิด">✕</button>
 </div>

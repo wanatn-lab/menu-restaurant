@@ -36,10 +36,19 @@ async function loadSiteContent() {
   }
 }
 
+function normalizeAnnouncement(value) {
+  const text = String(value || "").trim();
+  if (/^🎉\s*เตรียมเปิดร้าน\s+/.test(text) && !/ตุลาคม\s*2569/.test(text) && /สุพรรณบุรี/.test(text)) {
+    const place = text.replace(/^🎉\s*เตรียมเปิดร้าน\s*/, "").replace(/\s*สุพรรณบุรี.*$/, "").trim();
+    return `🎉 เตรียมเปิดร้าน ตุลาคม 2569 ที่${place} สุพรรณบุรี — กดติดตามไว้ก่อนใครที่นี่`;
+  }
+  return value;
+}
+
 // แทนที่ข้อความในแบนเนอร์ประกาศด้านบน (ถ้ามีอยู่ในหน้านั้น)
 function applyAnnounceBar(content) {
   const el = document.querySelector("[data-cms='announce-bar']");
-  if (el && content.announceBar) el.textContent = content.announceBar;
+  if (el && content.announceBar) el.textContent = normalizeAnnouncement(content.announceBar);
 }
 
 // แทนที่ hero ของหน้าแรก
