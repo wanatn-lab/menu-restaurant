@@ -435,21 +435,32 @@ footer.site-footer li { margin-bottom: 0.4rem; }
 .live-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s ease; }
 .live-card:hover .thumb img { transform: scale(1.06); }
 
-.live-card .play-btn {
+.live-card .thumb-video {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(43,27,18,0.28);
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
 }
-.live-card .play-btn::after {
-  content: '▶';
-  width: 52px; height: 52px;
+.live-card .thumb-video.playing { opacity: 1; }
+
+/* ไอคอนเล่นวิดีโอ: วางมุมขวาบน ไม่บังกลางรูป — วางเมาส์ทับการ์ดจะเล่นวิดีโอในการ์ดเองทันที (ไม่เด้ง modal) */
+.live-card .play-btn {
+  position: absolute; top: 0.6rem; right: 0.6rem;
+  width: 34px; height: 34px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.92);
-  color: var(--color-red);
+  background: rgba(43,27,18,0.55);
+  backdrop-filter: blur(2px);
+  color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  font-size: 0.75rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  pointer-events: none;
+  z-index: 2;
 }
+.live-card .play-btn::after { content: '▶'; margin-left: 2px; }
+.live-card .play-btn.is-playing::after { content: '❚❚'; margin-left: 0; font-size: 0.62rem; }
 
 .live-card .ribbon-featured {
   position: absolute; top: 0.7rem; left: 0.7rem;
@@ -462,10 +473,13 @@ footer.site-footer li { margin-bottom: 0.4rem; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 
-.live-card .live-body { padding: 0.95rem 1.1rem 1.1rem; }
+.live-card .live-body { padding: 0.95rem 1.1rem 1.1rem; cursor: pointer; transition: background 0.15s ease; }
+.live-card .live-body:hover { background: var(--color-cream-2); }
 .live-card .live-body h3 { font-size: 1.02rem; display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; margin-bottom: 0.3rem; }
 .live-card .live-body .price { color: var(--color-red); font-weight: 700; white-space: nowrap; font-size: 0.95rem; }
 .live-card .live-body p { color: var(--color-text-soft); font-size: 0.88rem; margin: 0; }
+.live-card .detail-hint { display: inline-block; margin-top: 0.5rem; font-size: 0.76rem; font-weight: 700; color: var(--color-red); }
+.live-card .detail-hint::after { content: ' →'; }
 
 .live-empty {
   text-align: center;
@@ -483,7 +497,7 @@ footer.site-footer li { margin-bottom: 0.4rem; }
 .live-skeleton .sk-line.short { width: 55%; margin-bottom: 1.1rem; }
 @keyframes sk-shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
 
-/* modal lightbox for video/photo */
+/* modal: รายละเอียดเมนู (รูป/วิดีโอ + ชื่อ + ราคา + คำอธิบาย) */
 .live-modal-overlay {
   position: fixed; inset: 0;
   background: rgba(20,12,7,0.82);
@@ -493,27 +507,57 @@ footer.site-footer li { margin-bottom: 0.4rem; }
   padding: 1.2rem;
 }
 .live-modal-overlay.open { display: flex; }
-.live-modal-box {
-  background: #000;
-  border-radius: var(--radius);
-  overflow: hidden;
-  width: min(720px, 100%);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-.live-modal-box .modal-media { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
-.live-modal-box .modal-media iframe,
-.live-modal-box .modal-media video,
-.live-modal-box .modal-media img {
-  width: 100%; height: 100%; object-fit: contain; border: 0; display: block;
-}
 .live-modal-close {
   position: absolute; top: -0.9rem; right: -0.9rem;
   width: 36px; height: 36px; border-radius: 50%;
   background: #fff; color: var(--color-text);
   border: none; font-size: 1.1rem; font-weight: 700;
   cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1;
 }
 .live-modal-inner { position: relative; }
+
+.item-detail-box {
+  display: flex; flex-direction: row;
+  width: min(760px, 100%);
+  max-height: min(560px, 82vh);
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.item-detail-box .detail-media { flex: 1 1 46%; min-width: 0; aspect-ratio: 1 / 1; background: #000; }
+.item-detail-box .detail-media img,
+.item-detail-box .detail-media video,
+.item-detail-box .detail-media iframe {
+  width: 100%; height: 100%; object-fit: cover; border: 0; display: block;
+}
+.item-detail-box .detail-info { flex: 1 1 54%; min-width: 0; padding: 1.5rem 1.6rem; overflow-y: auto; color: var(--color-text); }
+.item-detail-box .detail-info h3 { margin: 0.3rem 0 0.4rem; font-size: 1.3rem; }
+.item-detail-box .detail-badge {
+  display: inline-block; background: var(--color-gold); color: #2b1b12;
+  font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 999px;
+}
+.item-detail-box .detail-price { color: var(--color-red); font-weight: 800; font-size: 1.15rem; margin: 0 0 0.7rem; }
+.item-detail-box .detail-desc { color: var(--color-text-soft); font-size: 0.95rem; line-height: 1.7; margin: 0 0 1.1rem; }
+.item-detail-box .detail-call {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--color-red); color: #fff;
+  font-weight: 700; font-size: 0.9rem;
+  padding: 0.65rem 1.2rem; border-radius: 999px; text-decoration: none;
+}
+.item-detail-box .detail-call:hover { background: var(--color-red-dark); text-decoration: none; }
+
+@media (max-width: 640px) {
+  .item-detail-box { flex-direction: column; max-height: min(640px, 88vh); overflow-y: auto; }
+  .item-detail-box .detail-media { aspect-ratio: 16/10; }
+  .item-detail-box .detail-info { overflow-y: visible; padding: 1.2rem 1.2rem 1.4rem; }
+  .live-card .play-btn { width: 38px; height: 38px; }
+  .live-menu-tabs { gap: 0.45rem; margin-bottom: 1.4rem; }
+  .live-menu-tabs button { padding: 0.45rem 0.85rem; font-size: 0.82rem; }
+  .live-grid { gap: 1rem; }
+  .live-card .live-body { padding: 0.8rem 0.95rem 1rem; }
+}
 
 .live-cta-strip {
   background: var(--color-wood);
