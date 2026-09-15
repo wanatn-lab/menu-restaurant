@@ -1,0 +1,27 @@
+# robots.txt — จิ๊นโค สุพรรณบุรี
+# อนุญาตให้ทุก crawler เข้าถึงได้ทั้งหมด รวมถึง AI crawler สำหรับ GEO (Generative Engine Optimization)
+
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# AI / LLM crawlers — อนุญาตให้เก็บข้อมูลเว็บไปอ้างอิงใน AI search (ChatGPT, Perplexity, Google AI Overviews, Claude)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+Sitemap: https://jinko-menu.netlify.app/sitemap.xml

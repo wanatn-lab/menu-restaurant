@@ -1,0 +1,9 @@
+{
+  "name": "timely-bunny-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "จิ๊นโค สุพรรณบุรี - เว็บไซต์ + ระบบแอดมินจัดการเนื้อหา",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

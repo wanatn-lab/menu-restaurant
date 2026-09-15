@@ -1,283 +1,477 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ร้านข้าวมันไก่กิมเง็ก & ติ่มซำโกปี๊</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Prompt', sans-serif; background-color: #f5f5f4; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .glass-effect { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #f5f5f4; }
-        .menu-card { transition: all 0.2s ease; }
-        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>จิ๊นโค สุพรรณบุรี | ร้านอาหารเหนือแท้ ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม ถนนขุนช้าง</title>
+<meta name="description" content="จิ๊นโค สุพรรณบุรี ร้านอาหารเหนือแท้ต้นตำรับ ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมือง จ.สุพรรณบุรี เมนูเด่น ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม แคปหมู เริ่มต้นหลักสิบบาท เปิดตุลาคม 2569" />
+<link rel="canonical" href="https://jinko-menu.netlify.app/">
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="จิ๊นโค สุพรรณบุรี | ร้านอาหารเหนือแท้ต้นตำรับ">
+<meta property="og:description" content="อาหารเหนือแท้ต้นตำรับ ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม กลางเมืองสุพรรณบุรี ถนนขุนช้าง เปิดตุลาคม 2569">
+<meta property="og:url" content="https://jinko-menu.netlify.app/">
+<meta property="og:image" content="https://jinko-menu.netlify.app/images/og-image.jpg">
+<meta property="og:locale" content="th_TH">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="js/site-content.js" defer></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            red: "#a8623c",
+            reddark: "#8a4d2d",
+            gold: "#d9a765",
+            wood: "#8c6444",
+            cream: "#fdf6ec",
+            cream2: "#f6e8d3",
+            text: "#4a3626",
+            textsoft: "#7a6551",
+          },
+        },
+      },
+    },
+  };
+</script>
+<style>
+  * { font-family: 'Noto Sans Thai', Prompt, system-ui, sans-serif; }
+  .font-display { font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  html { scroll-behavior: smooth; }
+  .nav-link.active { background-color: #a8623c; color: #fff; }
+  .nav-link:not(.active):hover { background-color: #f6e8d3; }
+</style>
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "Restaurant",
+"name": "จิ๊นโค สุพรรณบุรี",
+"image": "https://jinko-menu.netlify.app/images/og-image.jpg",
+"url": "https://jinko-menu.netlify.app/",
+"telephone": "+66855298799",
+"servesCuisine": ["Northern Thai", "Thai", "อาหารเหนือ"],
+"priceRange": "฿",
+"address": {
+"@type": "PostalAddress",
+"streetAddress": "ถนนขุนช้าง (ซอยติดร้านป้ารัตน์ อาหารตามสั่ง)",
+"addressLocality": "ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี",
+"addressRegion": "สุพรรณบุรี",
+"postalCode": "72000",
+"addressCountry": "TH"
+},
+"geo": {
+"@type": "GeoCoordinates",
+"latitude": "14.476954",
+"longitude": "100.1163608"
+},
+"openingHours": "Mo-Su 08:00-20:00",
+"menu": "https://jinko-menu.netlify.app/menu.html",
+"acceptsReservations": "True",
+"sameAs": ["https://maps.app.goo.gl/RwttgXsd8FBZVneh6"]
+}
+</script>
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "FAQPage",
+"mainEntity": [
+{
+"@type": "Question",
+"name": "ลาบเหนือ คืออะไร ต่างจากลาบอีสานอย่างไร",
+"acceptedAnswer": {
+"@type": "Answer",
+"text": "ลาบเหนือ คือลาบสไตล์ล้านนาที่ใช้เนื้อสับผสมเครื่องในและเลือดสับ ปรุงด้วยพริกลาบคั่วสมุนไพรหลายชนิด รสชาติเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน และมักกินคู่กับผักสดพื้นบ้าน"
+}
+},
+{
+"@type": "Question",
+"name": "ร้านจิ๊นโค สุพรรณบุรี อยู่ที่ไหน",
+"acceptedAnswer": {
+"@type": "Answer",
+"text": "ร้านจิ๊นโค สุพรรณบุรี ตั้งอยู่บนถนนขุนช้าง ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี ในซอยติดร้านป้ารัตน์ อาหารตามสั่ง"
+}
+},
+{
+"@type": "Question",
+"name": "ร้านจิ๊นโค สุพรรณบุรี เปิดวันไหน",
+"acceptedAnswer": {
+"@type": "Answer",
+"text": "ร้านมีกำหนดเปิดให้บริการในเดือนตุลาคม 2569 สามารถติดตามความคืบหน้าและวันเปิดร้านที่แน่นอนได้ทางเพจและช่องทาง LINE ของร้าน"
+}
+}
+]
+}
+</script>
 </head>
-<body class="bg-stone-100 text-stone-800">
-    <div id="root"></div>
+<body class="min-h-screen w-full bg-brand-cream text-brand-text">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+  <!-- Announcement bar -->
+  <div class="bg-brand-wood px-4 py-2 text-center text-xs font-medium text-brand-cream md:text-sm" data-cms="announce-bar">
+    🎉 เตรียมเปิดร้าน <span class="font-semibold text-brand-gold">ตุลาคม 2569</span> ที่ถนนขุนช้าง สุพรรณบุรี — กดติดตามไว้ก่อนใครที่นี่
+  </div>
 
-        const ADMIN_PASSWORD = "123456";
+  <!-- Sticky nav -->
+  <div class="sticky top-0 z-40 border-b border-[#eaddc4] bg-brand-cream/95 backdrop-blur">
+    <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 md:px-6">
+      <a href="#top" class="flex shrink-0 items-center gap-2 font-display text-sm font-bold text-brand-red md:text-base">
+        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-red font-display text-sm text-white">จ</span>
+        <span class="hidden sm:inline">จิ๊นโค สุพรรณบุรี</span>
+      </a>
+      <div class="no-scrollbar flex flex-1 justify-end gap-1 overflow-x-auto md:justify-center md:gap-2" id="navLinks">
+        <button class="nav-link active flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="menu">🍽️ <span class="hidden md:inline">เมนูอาหาร</span></button>
+        <button class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="about">ℹ️ <span class="hidden md:inline">เกี่ยวกับเรา</span></button>
+        <button class="nav-link flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium text-brand-textsoft transition-colors" data-target="contact">📍 <span class="hidden md:inline">แผนที่ & ติดต่อ</span></button>
+      </div>
+      <a href="tel:0855298799" class="hidden shrink-0 items-center gap-1.5 rounded-full bg-brand-red px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-reddark md:flex">
+        📞 085-529-8799
+      </a>
+    </div>
+  </div>
 
-        const defaultMenus = [
-            { id: 1, name: "ข้าวมันไก่ต้ม (สูตรกิมเง็ก)", desc: "ไก่เนื้อนุ่มฉ่ำ ข้าวมันหอมกรุ่น น้ำจิ้มรสเด็ด", price: 50, category: "ข้าวมันไก่", mediaUrl: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80", type: "image", isRecommend: true },
-            { id: 2, name: "ฮะเก๋ากุ้ง (โกปี๊ หลังโรงไม้)", desc: "แป้งบางใส ไส้กุ้งเด้งเต็มคำ นึ่งร้อนๆ สดใหม่", price: 55, category: "ติ่มซำ", mediaUrl: "https://assets.mixkit.co/videos/preview/mixkit-putting-dumplings-in-a-steamer-43026-large.mp4", type: "video", isRecommend: true },
-            { id: 3, name: "โกปี๊เย็นโบราณ", desc: "กาแฟโบราณคั่วเข้ม หอมหวานมันกำลังดี", price: 35, category: "เครื่องดื่ม", mediaUrl: "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=800&q=80", type: "image", isRecommend: false }
-        ];
+  <a id="top"></a>
 
-        const App = () => {
-            const [view, setView] = useState('customer');
-            const [pinInput, setPinInput] = useState('');
-            
-            const [menus, setMenus] = useState(() => {
-                const saved = localStorage.getItem('restaurant_menus_v2');
-                return saved ? JSON.parse(saved) : defaultMenus;
-            });
-            const [activeCategory, setActiveCategory] = useState('แนะนำ');
-            const categories = ['แนะนำ', 'ข้าวมันไก่', 'ติ่มซำ', 'เครื่องดื่ม'];
+  <!-- Menu -->
+  <section id="menu" class="scroll-mt-16 py-8">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+      <p class="mb-1.5 flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-[0.18em] text-brand-red">✨ อาหารเหนือแท้ต้นตำรับ</p>
+      <h1 class="font-display text-2xl font-bold leading-tight md:text-3xl">เมนูอาหารเหนือ ร้านจิ๊นโค สุพรรณบุรี</h1>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-brand-textsoft md:text-base">
+        รวมเมนู<strong class="font-semibold text-brand-red">อาหารเหนือ</strong>ต้นตำรับของร้าน <strong class="font-semibold text-brand-red">จิ๊นโค สุพรรณบุรี</strong>
+        ปรุงสดใหม่ทุกวัน เหมาะกับมื้อกลางวัน มื้อเย็น หรือสั่งกลับบ้าน
+      </p>
 
-            useEffect(() => {
-                const handleHashChange = () => {
-                    if (window.location.hash === '#/admin') {
-                        setView('admin_login');
-                    } else {
-                        setView('customer');
-                    }
-                };
-                handleHashChange(); 
-                window.addEventListener('hashchange', handleHashChange);
-                return () => window.removeEventListener('hashchange', handleHashChange);
-            }, []);
+      <h2 class="mb-4 mt-7 font-display text-base font-semibold text-brand-wood">ลาบเหนือ & กับแกล้มอาหารเหนือ</h2>
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" id="menuGrid"></div>
 
-            useEffect(() => {
-                localStorage.setItem('restaurant_menus_v2', JSON.stringify(menus));
-            }, [menus]);
+      <p class="mt-7 rounded-xl bg-brand-cream2 px-4 py-3 text-center text-sm text-brand-textsoft">
+        พิมพ์ค้นหาว่า <strong class="font-semibold text-brand-red">"จิ้นโค"</strong> หรือ <strong class="font-semibold text-brand-red">"จินโค"</strong> ก็เจอร้านเราได้เช่นกัน
+        — ชื่อที่ถูกต้องคือ <strong class="font-semibold text-brand-red">"จิ๊นโค"</strong>
+      </p>
+    </div>
+  </section>
 
-            const handleLogin = (e) => {
-                e.preventDefault();
-                if (pinInput === ADMIN_PASSWORD) {
-                    setView('admin_dashboard');
-                    setPinInput('');
-                } else {
-                    alert('❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่');
-                    setPinInput('');
-                }
-            };
+  <!-- Brand story -->
+  <section class="bg-brand-cream2/60 py-10">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+      <div class="overflow-hidden rounded-2xl">
+        <div class="relative h-56 w-full overflow-hidden md:h-72">
+          <img data-cms="home-hero-image" src="https://picsum.photos/seed/north-thai-food-spread-hero/1600/700" alt="สำรับอาหารเหนือแท้ต้นตำรับ ร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#2c1d12]/85 via-[#2c1d12]/20 to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 px-5 pb-5 md:px-8 md:pb-6">
+            <p class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">ร้านใหม่ อาหารเหนือแท้ กลางเมืองสุพรรณบุรี</p>
+            <h2 class="mt-1 font-display text-xl font-bold leading-tight text-white md:text-3xl" data-cms="home-hero-heading">จิ๊นโค สุพรรณบุรี — อาหารเหนือต้นตำรับ ถึงถิ่นไม่ต้องไปไกล</h2>
+          </div>
+        </div>
+      </div>
 
-            const handleAddMenu = (e) => {
-                e.preventDefault();
-                const name = e.target.name.value;
-                const desc = e.target.desc.value;
-                const price = parseFloat(e.target.price.value);
-                const category = e.target.category.value;
-                const mediaUrl = e.target.mediaUrl.value;
-                const isRecommend = e.target.recommend.checked;
-                const type = mediaUrl.includes('.mp4') ? 'video' : 'image';
+      <p class="mt-6 max-w-3xl text-sm leading-relaxed text-brand-textsoft md:text-base" data-cms="home-hero-lead">
+        ในตัวเมืองสุพรรณบุรียังมีร้าน<strong class="font-semibold text-brand-red">อาหารเหนือสุพรรณบุรี</strong>ที่ทำแบบต้นตำรับไม่มากนัก
+        เราตั้งใจนำสูตร<strong class="font-semibold text-brand-red">ลาบเหนือ</strong> ไส้อั่ว และน้ำพริกหนุ่มแบบดั้งเดิมมาเสิร์ฟในบรรยากาศร้านบ้านๆ กันเอง
+        ราคาจับต้องได้ เพื่อให้คนสุพรรณและนักเดินทางผ่านทางได้ลิ้มรสอาหารเหนือแท้โดยไม่ต้องเดินทางไกลถึงภาคเหนือ
+      </p>
 
-                const newMenu = { id: Date.now(), name, desc, price, category, mediaUrl, type, isRecommend };
-                setMenus([newMenu, ...menus]);
-                e.target.reset();
-                alert('เพิ่มเมนูสำเร็จ!');
-            };
+      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+          <span class="text-2xl">🌶️</span>
+          <h3 class="mt-2 font-display text-base font-semibold">สูตรต้นตำรับ</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">พริกลาบคั่วเครื่องเทศแบบล้านนา ไม่ใช้สูตรสำเร็จ ปรุงสดใหม่ทุกวัน</p>
+        </div>
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+          <span class="text-2xl">🏠</span>
+          <h3 class="mt-2 font-display text-base font-semibold">บรรยากาศกันเอง</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">เหมือนครัวของคนคุ้นเคย นั่งกินง่าย พูดคุยสบาย</p>
+        </div>
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+          <span class="text-2xl">📍</span>
+          <h3 class="mt-2 font-display text-base font-semibold">ทำเลกลางเมือง</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี เดินทางสะดวก จอดรถง่าย</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            const handleDelete = (id) => {
-                if(confirm('ต้องการลบเมนูนี้ใช่หรือไม่?')) {
-                    setMenus(menus.filter(m => m.id !== id));
-                }
-            };
+  <!-- About -->
+  <section id="about" class="scroll-mt-16 py-10">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center">
+        <div>
+          <p class="mb-1.5 flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-[0.18em] text-brand-red">✨ รู้จักเรา</p>
+          <h2 class="font-display text-xl font-bold md:text-2xl" data-cms="about-hero-heading">จากเพจรีวิวอาหาร สู่ร้านจิ๊นโคของตัวเอง</h2>
+          <p class="mt-3 text-sm leading-relaxed text-brand-textsoft md:text-base" data-cms="about-hero-p1">
+            ก่อนจะเป็นร้าน<strong class="font-semibold text-brand-red">จิ๊นโค สุพรรณบุรี</strong> เจ้าของร้านคือคนทำเพจรีวิวร้านอาหารระดับภูมิภาคมาก่อน
+            ผ่านการชิม วิเคราะห์ และแนะนำร้านอาหารเหนือ ร้านลาบ และร้านอาหารท้องถิ่นมานับไม่ถ้วน
+            จนอยากลงมือทำร้านอาหารเหนือต้นตำรับของตัวเองให้คนสุพรรณบุรีได้ลิ้มลอง โดยไม่ต้องเดินทางไกลถึงภาคเหนือ
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-brand-textsoft md:text-base" data-cms="about-hero-p2">
+            ชื่อร้าน <strong class="font-semibold text-brand-red">"จิ๊นโค"</strong> มาจากภาษาเหนือ คำว่า "จิ๊น" แปลว่า เนื้อ ส่วน "โค" หมายถึงวัว
+          </p>
+        </div>
+        <div class="overflow-hidden rounded-2xl">
+          <img data-cms="about-hero-image" src="https://picsum.photos/seed/north-thai-restaurant-owner-kitchen/900/700" alt="เรื่องราวร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" />
+        </div>
+      </div>
 
-            const filteredMenus = activeCategory === 'แนะนำ' 
-                ? menus.filter(m => m.isRecommend)
-                : menus.filter(m => m.category === activeCategory);
+      <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="rounded-2xl bg-brand-cream2/70 p-5">
+          <span class="text-2xl">🎯</span>
+          <h3 class="mt-2 font-display text-base font-semibold">มุมมองจากคนรีวิวอาหาร</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">รู้ว่าลูกค้าคาดหวังอะไรจากร้านอาหารเหนือที่ดี ตั้งมาตรฐานร้านให้ผ่านเกณฑ์แบบเดียวกับร้านที่เคยให้คะแนนสูงๆ</p>
+        </div>
+        <div class="rounded-2xl bg-brand-cream2/70 p-5">
+          <span class="text-2xl">🌿</span>
+          <h3 class="mt-2 font-display text-base font-semibold">สูตรต้นตำรับล้านนา</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">คั่วพริกลาบและเครื่องสมุนไพรเองทุกวัน ไม่ใช้ผงสำเร็จรูป เพื่อรักษารสชาติอาหารเหนือแท้ๆ</p>
+        </div>
+        <div class="rounded-2xl bg-brand-cream2/70 p-5">
+          <span class="text-2xl">🏠</span>
+          <h3 class="mt-2 font-display text-base font-semibold">บรรยากาศบ้านๆ กันเอง</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">นั่งกินง่าย พูดคุยสบาย เหมาะกับมื้อกลางวันกับเพื่อนร่วมงาน หรือมื้อเย็นกับครอบครัว</p>
+        </div>
+        <div class="rounded-2xl bg-brand-cream2/70 p-5">
+          <span class="text-2xl">📍</span>
+          <h3 class="mt-2 font-display text-base font-semibold">ใจกลางสุพรรณบุรี</h3>
+          <p class="mt-1 text-sm leading-relaxed text-brand-textsoft">ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี แวะมากินง่าย ไม่ต้องเดินทางไกล</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            return (
-                <div className="max-w-7xl mx-auto bg-white min-h-screen shadow-2xl relative overflow-hidden flex flex-col">
-                    
-                    {/* Header สำหรับหน้าลูกค้า */}
-                    {view === 'customer' && (
-                        <div className="px-6 md:px-12 py-5 bg-stone-900 text-white flex justify-between items-center z-50 relative shadow-md">
-                            <div>
-                                <h1 className="text-xl md:text-3xl font-bold tracking-wide text-amber-500">ข้าวมันไก่กิมเง็ก & โกปี๊</h1>
-                                <p className="text-xs md:text-sm text-stone-300 mt-1">เมนูดิจิทัลอัจฉริยะ</p>
-                            </div>
-                        </div>
-                    )}
+  <!-- FAQ -->
+  <section class="bg-brand-cream2/60 py-10">
+    <div class="mx-auto max-w-3xl px-4 md:px-6">
+      <p class="mb-1.5 flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-[0.18em] text-brand-red">✨ คำถามที่พบบ่อย</p>
+      <h2 class="mb-5 font-display text-xl font-bold md:text-2xl">FAQ เกี่ยวกับร้านจิ๊นโค สุพรรณบุรี</h2>
+      <div class="flex flex-col gap-2.5" id="faqList"></div>
+    </div>
+  </section>
 
-                    {/* Header สำหรับหน้าหลังบ้าน */}
-                    {view === 'admin_dashboard' && (
-                        <div className="px-6 md:px-12 py-5 bg-amber-600 text-white flex justify-between items-center z-50 relative shadow-md">
-                            <div>
-                                <h1 className="text-xl md:text-2xl font-bold tracking-wide">จัดการระบบหลังบ้าน</h1>
-                            </div>
-                            <button onClick={() => window.location.hash = ''} className="text-sm bg-stone-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-stone-800 transition">
-                                🚪 ออกจากระบบ
-                            </button>
-                        </div>
-                    )}
+  <!-- Contact & Map -->
+  <section id="contact" class="scroll-mt-16 py-10">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+      <p class="mb-1.5 flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-[0.18em] text-brand-red">✨ แผนที่ & เส้นทาง</p>
+      <h2 class="mb-5 font-display text-xl font-bold md:text-2xl">ติดต่อร้านจิ๊นโค สุพรรณบุรี</h2>
 
-                    {/* ---------------- 1. หน้าลูกค้า (Customer View) ---------------- */}
-                    {view === 'customer' && (
-                        <div className="flex-1 flex flex-col">
-                            {/* หมวดหมู่ */}
-                            <div className="glass-effect px-4 md:px-12 py-4 flex justify-start md:justify-center overflow-x-auto gap-3 md:gap-4 sticky top-0 z-40 no-scrollbar">
-                                {categories.map(cat => (
-                                    <button 
-                                        key={cat} onClick={() => setActiveCategory(cat)}
-                                        className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${activeCategory === cat ? 'bg-amber-600 text-white shadow-lg transform scale-105' : 'bg-stone-100 text-stone-600 hover:bg-stone-200'}`}
-                                    >
-                                        {cat}
-                                    </button>
-                                ))}
-                            </div>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-5">
+        <div class="flex flex-col gap-4 md:col-span-2">
+          <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+            <div class="flex items-start gap-3">
+              <span class="mt-0.5 text-lg">📍</span>
+              <div>
+                <p class="font-display text-sm font-semibold">ที่อยู่</p>
+                <p class="mt-0.5 text-sm leading-relaxed text-brand-textsoft">
+                  ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี จ.สุพรรณบุรี 72000<br />
+                  (ในซอยติดร้านป้ารัตน์ อาหารตามสั่ง)
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+            <div class="flex items-start gap-3">
+              <span class="mt-0.5 text-lg">📞</span>
+              <div>
+                <p class="font-display text-sm font-semibold">โทร / LINE</p>
+                <a href="tel:0855298799" class="mt-0.5 block text-sm font-medium text-brand-red">085-529-8799</a>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+            <div class="flex items-start gap-3">
+              <span class="mt-0.5 text-lg">🕒</span>
+              <div>
+                <p class="font-display text-sm font-semibold">เวลาเปิด-ปิด (คาดการณ์)</p>
+                <p class="mt-0.5 text-sm text-brand-textsoft">ทุกวัน 08:00 – 20:00 น.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-white p-5 ring-1 ring-[#eaddc4]">
+            <div class="flex items-start gap-3">
+              <span class="mt-0.5 text-lg">📅</span>
+              <div>
+                <p class="font-display text-sm font-semibold">กำหนดเปิดร้าน</p>
+                <p class="mt-0.5 text-sm text-brand-textsoft">ตุลาคม 2569</p>
+              </div>
+            </div>
+          </div>
+          <a href="tel:0855298799" class="flex items-center justify-center gap-2 rounded-xl bg-brand-red py-3 font-display text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-reddark">
+            📞 โทร 085-529-8799
+          </a>
+        </div>
 
-                            {/* รายการอาหาร (Grid System) */}
-                            <div className="bg-stone-50 p-4 md:p-8 flex-1">
-                                {filteredMenus.length === 0 && (
-                                    <div className="text-center py-20 text-stone-400 text-base">ยังไม่มีเมนูในหมวดหมู่นี้</div>
-                                )}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                                    {filteredMenus.map(menu => (
-                                        <div key={menu.id} className="menu-card bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden flex flex-col">
-                                            <div className="relative w-full aspect-video bg-stone-200 overflow-hidden">
-                                                {menu.type === 'video' ? (
-                                                    <video autoPlay loop muted playsInline className="object-cover w-full h-full">
-                                                        <source src={menu.mediaUrl} type="video/mp4" />
-                                                    </video>
-                                                ) : (
-                                                    <img src={menu.mediaUrl} alt={menu.name} className="object-cover w-full h-full" loading="lazy" />
-                                                )}
-                                                {menu.isRecommend && (
-                                                    <div className="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded shadow-md tracking-wider">RECOMMENDED</div>
-                                                )}
-                                            </div>
-                                            <div className="p-5 flex flex-col flex-1">
-                                                <h3 className="text-lg md:text-xl font-bold text-stone-800 leading-snug">{menu.name}</h3>
-                                                <p className="text-sm text-stone-500 mt-2 leading-relaxed flex-1">{menu.desc}</p>
-                                                <div className="text-2xl font-bold text-amber-600 mt-4 border-t border-stone-100 pt-3 text-right">
-                                                    ฿{menu.price}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
+        <div class="overflow-hidden rounded-2xl ring-1 ring-[#eaddc4] md:col-span-3">
+          <iframe title="แผนที่ร้านจิ๊นโค สุพรรณบุรี" src="https://www.google.com/maps?q=14.476954,100.1163608&z=17&output=embed" class="h-72 w-full md:h-full md:min-h-[380px]" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                    {/* ---------------- 2. หน้ากรอกรหัสผ่าน (Login View) ---------------- */}
-                    {view === 'admin_login' && (
-                        <div className="min-h-screen bg-stone-50 flex flex-col justify-center items-center p-6">
-                            <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md text-center border border-stone-100">
-                                <div className="text-5xl mb-6">🔒</div>
-                                <h2 className="text-2xl font-bold text-stone-800 mb-2">เฉพาะเจ้าหน้าที่</h2>
-                                <p className="text-sm text-stone-500 mb-8">กรุณาใส่รหัสผ่านเพื่อเข้าสู่ระบบจัดการ</p>
-                                
-                                <form onSubmit={handleLogin}>
-                                    <input 
-                                        type="password" 
-                                        value={pinInput}
-                                        onChange={(e) => setPinInput(e.target.value)}
-                                        placeholder="ใส่รหัสผ่าน..." 
-                                        className="w-full text-center text-xl tracking-[0.5em] rounded-xl border-stone-300 border p-4 focus:ring-2 focus:ring-amber-500 focus:outline-none mb-6" 
-                                        required
-                                    />
-                                    <button type="submit" className="w-full bg-amber-600 text-white font-bold py-4 rounded-xl text-lg hover:bg-amber-700 transition">
-                                        เข้าสู่ระบบ
-                                    </button>
-                                </form>
-                                <button onClick={() => window.location.hash = ''} className="mt-6 text-sm text-stone-400 hover:text-stone-600 underline">
-                                    กลับไปหน้าลูกค้า
-                                </button>
-                            </div>
-                        </div>
-                    )}
+  <!-- Footer -->
+  <footer class="bg-brand-text px-4 py-10 text-brand-cream2 md:px-6">
+    <div class="mx-auto grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-3">
+      <div>
+        <p class="font-display text-base font-bold text-white">จิ๊นโค สุพรรณบุรี</p>
+        <p class="mt-2 text-sm leading-relaxed text-[#c9b79c]">ร้านอาหารเหนือแท้ต้นตำรับ ลาบเหนือ ไส้อั่ว น้ำพริกหนุ่ม แคปหมู กลางเมืองสุพรรณบุรี</p>
+      </div>
+      <div>
+        <p class="font-display text-sm font-semibold text-white">เมนูลัด</p>
+        <div class="mt-2 flex flex-col gap-1.5 text-sm text-[#c9b79c]">
+          <a href="#menu" class="w-fit text-left hover:text-white">เมนูอาหาร</a>
+          <a href="#about" class="w-fit text-left hover:text-white">เกี่ยวกับเรา</a>
+          <a href="#contact" class="w-fit text-left hover:text-white">แผนที่ & ติดต่อ</a>
+          <a href="/blog" class="w-fit text-left hover:text-white">บทความ</a>
+          <a href="/reviews" class="w-fit text-left hover:text-white">รีวิว</a>
+        </div>
+      </div>
+      <div>
+        <p class="font-display text-sm font-semibold text-white">ติดต่อ</p>
+        <div class="mt-2 flex flex-col gap-1.5 text-sm text-[#c9b79c]">
+          <a href="tel:0855298799" class="hover:text-white">085-529-8799</a>
+          <a href="#contact" class="w-fit text-left hover:text-white">แผนที่ & เส้นทาง</a>
+        </div>
+      </div>
+    </div>
+    <p class="mx-auto mt-8 max-w-5xl border-t border-white/10 pt-5 text-xs text-[#a8967c]">
+      © 2026 จิ๊นโค สุพรรณบุรี — ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี จ.สุพรรณบุรี 72000
+    </p>
+  </footer>
 
-                    {/* ---------------- 3. หน้าจัดการหลังบ้าน (Admin Dashboard) ---------------- */}
-                    {view === 'admin_dashboard' && (
-                        <div className="p-4 md:p-8 bg-stone-50 flex-1">
-                            <div className="max-w-4xl mx-auto">
-                                <h2 className="text-xl md:text-2xl font-bold text-stone-800 mb-6 flex items-center gap-3">
-                                    <span className="bg-amber-500 w-2 h-6 rounded"></span> ฟอร์มเพิ่มเมนูอาหาร / วิดีโอ
-                                </h2>
-                                
-                                <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200 mb-10">
-                                    <form onSubmit={handleAddMenu} className="space-y-5">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                            <div>
-                                                <label className="block text-sm font-bold text-stone-700 mb-2">ชื่อเมนู</label>
-                                                <input type="text" name="name" required placeholder="เช่น ข้าวมันไก่ตอนพิเศษ" className="w-full rounded-lg border-stone-300 border p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-bold text-stone-700 mb-2">หมวดหมู่</label>
-                                                <select name="category" className="w-full rounded-lg border-stone-300 border p-3 bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                                                    <option value="ข้าวมันไก่">ข้าวมันไก่</option>
-                                                    <option value="ติ่มซำ">ติ่มซำ</option>
-                                                    <option value="เครื่องดื่ม">เครื่องดื่ม</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-stone-700 mb-2">คำบรรยายความอร่อย</label>
-                                            <textarea name="desc" rows="2" placeholder="ไก่เนื้อนุ่มฉ่ำ..." className="w-full rounded-lg border-stone-300 border p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                            <div>
-                                                <label className="block text-sm font-bold text-stone-700 mb-2">ราคา (บาท)</label>
-                                                <input type="number" name="price" required placeholder="50" className="w-full rounded-lg border-stone-300 border p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-bold text-stone-700 mb-2">ลิงก์รูปภาพ หรือ วิดีโอ (.mp4)</label>
-                                                <input type="url" name="mediaUrl" required placeholder="วางลิงก์รูปภาพ หรือคลิป .mp4" className="w-full rounded-lg border-stone-300 border p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none" />
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-3 py-2">
-                                            <input type="checkbox" name="recommend" id="rec" className="w-5 h-5 text-amber-600 rounded border-stone-300 focus:ring-amber-500" />
-                                            <label htmlFor="rec" className="text-sm font-bold text-stone-700 cursor-pointer">ตั้งเป็นเมนูแนะนำ (Recommended)</label>
-                                        </div>
-                                        <button type="submit" className="w-full bg-stone-900 text-white font-bold py-4 rounded-xl hover:bg-stone-800 transition text-lg shadow-md mt-2">
-                                            💾 บันทึกเมนูขึ้นระบบ
-                                        </button>
-                                    </form>
-                                </div>
+<script>
+  // Set "video" to the dish's own video file URL (mp4) to enable the
+  // hover-to-play (desktop) / tap-to-play (mobile) preview on that card.
+  // Leave it null for items that don't have a video yet — they'll just
+  // show the photo as usual. The one below is a placeholder sample clip;
+  // replace it with the real uploaded video of the dish.
+  const MENU_ITEMS = [
+    { name: "ลาบเหนือ", tags: ["เมนูซิกเนเจอร์", "แนะนำ"], desc: "เนื้อสับคั่วพริกลาบสมุนไพรล้านนา หอมเครื่องเทศ รสจัดจ้าน เมนูซิกเนเจอร์ของร้าน สั่งได้ทั้งลาบหมูและลาบเนื้อ", seed: "north-thai-laab-neua", video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" },
+    { name: "ไส้อั่ว", tags: [], desc: "ไส้อั่วสูตรเหนือแท้ อัดแน่นด้วยสมุนไพรและพริกแกง ย่างหอมกรุ่นทั้งไม้", seed: "north-thai-saiua-sausage", video: null },
+    { name: "น้ำพริกหนุ่ม", tags: [], desc: "พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคปหมูและผักสดตามฤดูกาล", seed: "north-thai-namprik-num", video: null },
+    { name: "แคปหมู", tags: [], desc: "แคปหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้ ทานเล่นหรือแกล้มน้ำพริกก็เข้ากัน", seed: "north-thai-kaep-moo-crackling", video: null },
+    { name: "สามชั้นทอด", tags: [], desc: "หมูสามชั้นทอดกรอบนอกนุ่มใน เสิร์ฟพร้อมน้ำจิ้มแจ่วรสจัด", seed: "thai-pork-belly-fried", video: null },
+    { name: "ไก่ทอด", tags: [], desc: "ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน", seed: "thai-herb-fried-chicken", video: null },
+  ];
 
-                                <h3 className="text-xl font-bold text-stone-800 mb-6 flex items-center gap-3">
-                                    <span className="bg-stone-300 w-2 h-6 rounded"></span> จัดการรายการเมนูที่มีในระบบ
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {menus.map(menu => (
-                                        <div key={menu.id} className="flex gap-4 bg-white p-4 rounded-xl shadow-sm items-center border border-stone-200">
-                                            <div className="w-20 h-20 bg-stone-100 rounded-lg overflow-hidden shrink-0">
-                                                {menu.type === 'video' ? 
-                                                    <video src={menu.mediaUrl} className="w-full h-full object-cover" /> : 
-                                                    <img src={menu.mediaUrl} className="w-full h-full object-cover" />
-                                                }
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h4 className="font-bold text-stone-800 text-sm md:text-base truncate">{menu.name}</h4>
-                                                <p className="text-xs md:text-sm text-stone-500 mt-1">{menu.category} • ฿{menu.price}</p>
-                                            </div>
-                                            <button onClick={() => handleDelete(menu.id)} className="text-red-500 text-sm font-semibold px-4 py-2 bg-red-50 hover:bg-red-100 rounded-lg transition">
-                                                ลบ
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        };
+  const FAQS = [
+    { q: "ลาบเหนือ คืออะไร ต่างจากลาบอีสานอย่างไร", a: "ลาบเหนือใช้เนื้อสับผสมเครื่องในและเลือดสับ ปรุงด้วยพริกลาบคั่วสมุนไพรล้านนา รสเผ็ดร้อนหอมเครื่องเทศ ไม่ใส่น้ำมะนาวหรือข้าวคั่วแบบลาบอีสาน" },
+    { q: "ร้านจิ๊นโค สุพรรณบุรี อยู่ที่ไหน", a: "ตั้งอยู่บนถนนขุนช้าง ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี ในซอยติดร้านป้ารัตน์ อาหารตามสั่ง" },
+    { q: "ร้านเปิดวันไหน", a: "มีกำหนดเปิดให้บริการเดือนตุลาคม 2569 เวลาทำการโดยประมาณ ทุกวัน 08:00–20:00 น." },
+  ];
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+  const menuGrid = document.getElementById("menuGrid");
+  MENU_ITEMS.forEach((item) => {
+    const tagsHtml = item.tags.map(t =>
+      `<span class="flex items-center gap-1 rounded-r-full bg-brand-red py-1 pl-3 pr-3 text-xs font-semibold text-white shadow-sm">${t === "แนะนำ" ? "🔥 " : ""}${t}</span>`
+    ).join("");
+    const videoHtml = item.video ? `
+          <video class="media-video pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300" muted loop playsinline webkit-playsinline="true" disablePictureInPicture disableRemotePlayback preload="none">
+            <source src="${item.video}" type="video/mp4" />
+          </video>
+          <button type="button" class="media-play-btn absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/55 text-white shadow-md backdrop-blur transition-transform active:scale-95 md:hidden" aria-label="เล่นวิดีโอ ${item.name}">
+            <svg class="play-icon h-4 w-4 translate-x-[1px]" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="pause-icon hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+          </button>` : "";
+    menuGrid.insertAdjacentHTML("beforeend", `
+      <div class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#eaddc4]">
+        <div class="media-frame group relative aspect-square w-full overflow-hidden md:aspect-video" ${item.video ? "data-video-card" : ""}>
+          <img src="https://picsum.photos/seed/${item.seed}/640/640" alt="${item.name} ร้านจิ๊นโค สุพรรณบุรี" class="h-full w-full object-cover" loading="lazy" />
+          ${videoHtml}
+          ${item.tags.length ? `<div class="absolute left-0 top-3 flex flex-col items-start gap-1">${tagsHtml}</div>` : ""}
+        </div>
+        <div class="flex flex-1 flex-col gap-1.5 px-4 pb-4 pt-4">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-display text-base font-semibold text-brand-text">${item.name}</h3>
+            <span class="shrink-0 pt-0.5 text-xs font-medium text-[#a8a08f]">เริ่มต้น</span>
+          </div>
+          <p class="text-sm leading-relaxed text-brand-textsoft">${item.desc}</p>
+        </div>
+      </div>
+    `);
+  });
+
+  // Video preview behaviour: hover-to-play on desktop (mouse/trackpad),
+  // tap-the-button-to-play on mobile/touch. The video always stays inside
+  // its original card frame — no lightbox, no fullscreen expansion.
+  const hasFineHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  document.querySelectorAll("[data-video-card]").forEach((frame) => {
+    const video = frame.querySelector(".media-video");
+    const btn = frame.querySelector(".media-play-btn");
+    const playIcon = btn.querySelector(".play-icon");
+    const pauseIcon = btn.querySelector(".pause-icon");
+    let isPlaying = false;
+
+    const play = () => {
+      video.classList.remove("opacity-0");
+      video.classList.add("opacity-100");
+      video.currentTime = 0;
+      video.play().catch(() => {});
+      isPlaying = true;
+      playIcon.classList.add("hidden");
+      pauseIcon.classList.remove("hidden");
+    };
+    const stop = () => {
+      video.pause();
+      video.classList.remove("opacity-100");
+      video.classList.add("opacity-0");
+      isPlaying = false;
+      playIcon.classList.remove("hidden");
+      pauseIcon.classList.add("hidden");
+    };
+
+    if (hasFineHover) {
+      frame.addEventListener("mouseenter", play);
+      frame.addEventListener("mouseleave", stop);
+    }
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      isPlaying ? stop() : play();
+    });
+  });
+
+  const faqList = document.getElementById("faqList");
+  FAQS.forEach((f, i) => {
+    faqList.insertAdjacentHTML("beforeend", `
+      <div class="overflow-hidden rounded-xl bg-white ring-1 ring-[#eaddc4]">
+        <button class="faq-toggle flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left" data-index="${i}">
+          <span class="font-display text-sm font-semibold text-brand-text md:text-base">${f.q}</span>
+          <span class="faq-chevron shrink-0 text-brand-red transition-transform">▾</span>
+        </button>
+        <p class="faq-answer hidden px-4 pb-4 text-sm leading-relaxed text-brand-textsoft">${f.a}</p>
+      </div>
+    `);
+  });
+  faqList.addEventListener("click", (e) => {
+    const btn = e.target.closest(".faq-toggle");
+    if (!btn) return;
+    const answer = btn.parentElement.querySelector(".faq-answer");
+    const chevron = btn.querySelector(".faq-chevron");
+    const isOpen = !answer.classList.contains("hidden");
+    faqList.querySelectorAll(".faq-answer").forEach(a => a.classList.add("hidden"));
+    faqList.querySelectorAll(".faq-chevron").forEach(c => c.style.transform = "");
+    if (!isOpen) {
+      answer.classList.remove("hidden");
+      chevron.style.transform = "rotate(180deg)";
+    }
+  });
+
+  const navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById(btn.dataset.target).scrollIntoView({ behavior: "smooth" });
+    });
+  });
+  const sections = ["menu", "about", "contact"].map(id => document.getElementById(id));
+  const setActive = () => {
+    let current = "menu";
+    sections.forEach(sec => {
+      if (sec.getBoundingClientRect().top - 90 <= 0) current = sec.id;
+    });
+    navLinks.forEach(btn => btn.classList.toggle("active", btn.dataset.target === current));
+  };
+  window.addEventListener("scroll", setActive, { passive: true });
+  setActive();
+</script>
 </body>
 </html>

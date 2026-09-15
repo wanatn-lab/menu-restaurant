@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เมนูไลฟ์ | จิ๊นโค สุพรรณบุรี — ดูเมนู รูป และวิดีโอล่าสุด</title>
+<meta name="description" content="เมนูไลฟ์ร้านจิ๊นโค สุพรรณบุรี อัปเดตรูป ราคา และวิดีโอล่าสุดโดยตรงจากร้าน กดดูวิดีโอเมนูเด็ดได้ทันที">
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+<div class="nav-wrap">
+<a class='brand' href='/'>
+<span class="logo-mark">จ</span>
+<span>จิ๊นโค สุพรรณบุรี<small>อาหารเหนือแท้ต้นตำรับ</small></span>
+</a>
+<nav class="main-nav" aria-label="เมนูหลัก">
+<ul>
+<li><a href='/'>หน้าแรก</a></li>
+<li><a href='/menu'>เมนูอาหาร</a></li>
+<li><a href='/about'>เกี่ยวกับเรา</a></li>
+<li><a class='nav-cta' href='/contact'>แผนที่ & ติดต่อ</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<section class="live-hero">
+<div class="container">
+<div id="liveMenuStatus" class="live-dot"><span class="dot"></span> กำลังโหลดเมนู…</div>
+<h1>เมนูไลฟ์ จิ๊นโค สุพรรณบุรี</h1>
+<p class="lead">หน้านี้ทำไว้ให้ส่งลิงก์ให้ลูกค้าดูได้ทันที รูป ราคา และวิดีโอจะอัปเดตอัตโนมัติทุกครั้งที่เจ้าของร้านแก้ในชีตเมนู — กดที่รูปเมนูที่มีไอคอน ▶ เพื่อดูวิดีโอ</p>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div id="liveMenuTabs" class="live-menu-tabs"></div>
+<div id="liveMenuGrid" class="live-grid"></div>
+
+<div class="live-cta-strip">
+<h3 style="color:#fff;">อยากสั่งหรือถามเมนูเพิ่มเติม?</h3>
+<p>โทรหรือทักได้เลย ทีมงานร้านจิ๊นโคยินดีแนะนำเมนูให้ตามเมนูที่ท่านชอบ</p>
+<a class="btn btn-primary" href="tel:0855298799">โทร 085-529-8799</a>
+</div>
+</div>
+</section>
+
+<footer class="site-footer">
+<div class="container footer-bottom">© 2026 จิ๊นโค สุพรรณบุรี — ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี จ.สุพรรณบุรี 72000</div>
+</footer>
+
+<!-- Modal สำหรับเล่นวิดีโอ/ดูภาพขยาย -->
+<div id="liveModalOverlay" class="live-modal-overlay">
+<div class="live-modal-inner">
+<div class="live-modal-box">
+<div id="liveModalMedia" class="modal-media"></div>
+</div>
+<button id="liveModalClose" class="live-modal-close" aria-label="ปิด">✕</button>
+</div>
+</div>
+
+<script src="js/menu-live.js"></script>
+</body>
+</html>
