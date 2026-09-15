@@ -2,16 +2,20 @@
    เมนูไลฟ์ จิ๊นโค สุพรรณบุรี
    ดึงข้อมูลเมนู (ชื่อ/ราคา/รูป/วิดีโอ) จาก /api/content
    ซึ่งเจ้าของร้านแก้ไขเองได้ผ่านหน้า /admin (ไม่ต้องแก้โค้ด ไม่ต้องใช้ Google Sheet)
+   ใช้ร่วมกันทั้งหน้าแรก (index.html) และหน้าเมนูไลฟ์ (menu-live.html)
+   เพื่อให้หน้าบ้านทุกหน้าตรงกับข้อมูลหลังบ้านเสมอ
    =================================================================== */
 
 // ข้อมูลเมนูสำรอง ใช้แสดงผลถ้าดึงจาก /api/content ไม่สำเร็จ
 // (เช่น ฟังก์ชันยังไม่ได้ deploy หรือเปิดไฟล์ตรงในเครื่องโดยไม่มีเซิร์ฟเวอร์)
 const MENU_LIVE_FALLBACK = [
-  { category: 'ของทอด & ปิ้งย่าง', name: 'ไก่ทอด', price: 'เริ่มต้น', desc: 'ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน', image: 'images/dish-kaithod.svg', video: '', featured: true },
-  { category: 'ของทอด & ปิ้งย่าง', name: 'แคบหมู', price: 'เริ่มต้น', desc: 'แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้', image: 'images/dish-kaepmoo.svg', video: '', featured: true },
-  { category: 'น้ำพริก & เครื่องเคียง', name: 'พริกหนุ่มปิ้งตำ', price: 'เริ่มต้น', desc: 'พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคบหมูและผักสดตามฤดูกาล', image: 'images/dish-namprik.svg', video: '', featured: true },
-  { category: 'พิเศษ', name: 'อ่องปูแสม', price: 'เริ่มต้น', desc: 'อ่องปูแสม แกงคั่วรสจัดจ้าน กลิ่นหอมเครื่องแกงเหนือ', image: '', video: '', featured: true },
-  { category: 'พิเศษ', name: 'ข้าวซอยเนื้อ/ไก่', price: 'เริ่มต้น', desc: 'ข้าวซอยเนื้อ/ไก่ น้ำแกงเข้มข้น หอมเครื่องแกงเหนือ โรยหน้าเส้นกรอบ', image: '', video: '', featured: true }
+  { category: 'ของทอด & ปิ้งย่าง', name: 'ไก่ทอด', price: '60', desc: 'ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน', image: 'images/dish-kaithod.svg', video: '', featured: false },
+  { category: 'ของทอด & ปิ้งย่าง', name: 'ไส้อั่วโฮมเมด', price: '60', desc: 'ไส้อั่วหอมๆ เครื่องเทศแน่น รสเข้มข้น กับสูตรโฮมเมดของเราเอง', image: 'images/dish-saiua.svg', video: '', featured: true },
+  { category: 'ของทอด & ปิ้งย่าง', name: 'แคบหมู', price: '30', desc: 'แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้', image: 'images/dish-kaepmoo.svg', video: '', featured: true },
+  { category: 'น้ำพริก & เครื่องเคียง', name: 'พริกหนุ่มปิ้งตำ', price: '30', desc: 'พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคบหมูและผักสดตามฤดูกาล', image: 'images/dish-namprik.svg', video: '', featured: true },
+  { category: 'น้ำพริก & เครื่องเคียง', name: 'ป่นน้ำปู๋ (สูตรเค้ง)', price: '100', desc: 'ป่นน้ำปู๋สูตรเค้ง เอกลักษณ์เฉพาะร้าน รสเข้มข้นแบบล้านนาแท้', image: 'images/dish-laab.svg', video: '', featured: true },
+  { category: 'พิเศษ', name: 'อ่องปูแสม', price: '100', desc: 'อ่องปูแสม แกงคั่วรสจัดจ้าน กลิ่นหอมเครื่องแกงเหนือ', image: '', video: '', featured: true },
+  { category: 'พิเศษ', name: 'ข้าวซอยเนื้อ/ไก่', price: '70', desc: 'ข้าวซอยเนื้อ/ไก่ น้ำแกงเข้มข้น หอมเครื่องแกงเหนือ โรยหน้าเส้นกรอบ', image: '', video: '', featured: true }
 ];
 
 function isYouTubeUrl(url) {
@@ -29,6 +33,11 @@ function toYouTubeEmbed(url) {
 
 function isVideoFileUrl(url) {
   return /\.(mp4|webm|ogg)(\?|$)/i.test(url);
+}
+
+function menuLivePriceText(item) {
+  if (!item.price) return 'สอบถามราคา';
+  return /^\d+$/.test(String(item.price)) ? `฿${item.price}` : item.price;
 }
 
 async function loadMenuLiveData() {
@@ -59,54 +68,121 @@ function renderSkeleton(container, count = 6) {
   }
 }
 
+// การ์ดที่มีวิดีโอไฟล์จริง (mp4/webm/ogg) เล่นอยู่ในการ์ดเลย — เอาเมาส์วางทับแล้วเล่นอัตโนมัติ
+// (บนมือถือ แตะที่รูปเพื่อเล่น/หยุด) ไอคอนเล่นเป็นวงกลมเล็กมุมขวาบน ไม่บังกลางรูป
+// คลิกที่ชื่อ/คำอธิบายด้านล่างการ์ด (ไม่ใช่รูป) เพื่อดูรายละเอียดเต็มของเมนูนั้น
 function buildCard(item) {
   const card = document.createElement('div');
   card.className = 'live-card';
-  const hasVideo = !!item.video;
   const imgSrc = item.image || 'images/dish-laab.svg';
-  const priceText = item.price ? (/^\d+$/.test(item.price) ? `฿${item.price}` : item.price) : 'สอบถามราคา';
+  const hasInlineVideo = !!item.video && isVideoFileUrl(item.video);
+  const hasOtherMedia = !!item.video && !hasInlineVideo;
 
   card.innerHTML = `
-    <div class="thumb" role="${hasVideo ? 'button' : 'img'}" tabindex="${hasVideo ? '0' : '-1'}" aria-label="${hasVideo ? 'เล่นวิดีโอ ' + item.name : item.name}">
+    <div class="thumb" aria-label="${item.name}">
       ${item.featured ? '<span class="ribbon-featured">แนะนำ</span>' : ''}
       <img src="${imgSrc}" alt="${item.name} จิ๊นโค สุพรรณบุรี" loading="lazy">
-      ${hasVideo ? '<div class="play-btn"></div>' : ''}
+      ${hasInlineVideo ? `
+        <video class="thumb-video" muted loop playsinline webkit-playsinline="true" disablePictureInPicture disableRemotePlayback preload="none">
+          <source src="${item.video}" type="video/mp4">
+        </video>
+        <div class="play-btn"></div>
+      ` : ''}
+      ${hasOtherMedia ? '<div class="play-btn"></div>' : ''}
     </div>
     <div class="live-body">
-      <h3><span>${item.name}</span><span class="price">${priceText}</span></h3>
+      <h3><span>${item.name}</span><span class="price">${menuLivePriceText(item)}</span></h3>
       ${item.desc ? `<p>${item.desc}</p>` : ''}
+      <span class="detail-hint">ดูรายละเอียด</span>
     </div>
   `;
 
-  if (hasVideo) {
-    const openVideo = () => openMenuLiveModal(item);
-    card.querySelector('.thumb').addEventListener('click', openVideo);
-    card.querySelector('.thumb').addEventListener('keypress', e => { if (e.key === 'Enter') openVideo(); });
+  const thumb = card.querySelector('.thumb');
+  const body = card.querySelector('.live-body');
+
+  if (hasInlineVideo) {
+    // มีวิดีโออินไลน์: วางเมาส์ทับ (หรือแตะบนมือถือ) ที่รูปเพื่อเล่นวิดีโอในการ์ดเอง
+    wireInlineVideoCard(card);
+  } else {
+    // ไม่มีวิดีโออินไลน์ (ไม่มีวิดีโอเลย หรือเป็นลิงก์ YouTube): คลิก/แตะที่รูปเพื่อดูรายละเอียด
+    thumb.style.cursor = 'pointer';
+    thumb.setAttribute('role', 'button');
+    thumb.setAttribute('tabindex', '0');
+    thumb.addEventListener('click', () => openItemDetail(item));
+    thumb.addEventListener('keypress', e => { if (e.key === 'Enter') openItemDetail(item); });
   }
+
+  // คลิก/แตะที่ชื่อหรือคำอธิบายเมนู เพื่อดูรายละเอียดเต็มเสมอ ไม่ว่าการ์ดจะมีวิดีโอหรือไม่
+  body.addEventListener('click', () => openItemDetail(item));
 
   return card;
 }
 
-function openMenuLiveModal(item) {
-  const overlay = document.getElementById('liveModalOverlay');
-  const mediaBox = document.getElementById('liveModalMedia');
-  let mediaHtml = '';
-  if (isYouTubeUrl(item.video)) {
-    mediaHtml = `<iframe src="${toYouTubeEmbed(item.video)}" allow="autoplay; encrypted-media" allowfullscreen title="วิดีโอ ${item.name}"></iframe>`;
-  } else if (isVideoFileUrl(item.video)) {
-    mediaHtml = `<video src="${item.video}" controls autoplay playsinline></video>`;
+// เล่นวิดีโอในการ์ดเอง: วางเมาส์ทับ = เล่น (คอมพิวเตอร์/แทร็กแพด), แตะที่รูป = เล่น/หยุด (มือถือ/จอสัมผัส)
+// วิดีโออยู่ในกรอบการ์ดเดิมเสมอ ไม่เด้งเต็มจอ ไม่มี modal ระหว่างเล่น
+function wireInlineVideoCard(card) {
+  const thumb = card.querySelector('.thumb');
+  const video = card.querySelector('.thumb-video');
+  const btn = card.querySelector('.play-btn');
+  let isPlaying = false;
+
+  const play = () => {
+    video.classList.add('playing');
+    video.currentTime = 0;
+    video.play().catch(() => {});
+    isPlaying = true;
+    btn.classList.add('is-playing');
+  };
+  const stop = () => {
+    video.pause();
+    video.classList.remove('playing');
+    isPlaying = false;
+    btn.classList.remove('is-playing');
+  };
+
+  const hasFineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (hasFineHover) {
+    thumb.addEventListener('mouseenter', play);
+    thumb.addEventListener('mouseleave', stop);
   } else {
-    mediaHtml = `<img src="${item.video}" alt="วิดีโอ/ภาพเคลื่อนไหว ${item.name}">`;
+    thumb.addEventListener('click', () => { isPlaying ? stop() : play(); });
   }
-  mediaBox.innerHTML = mediaHtml;
+}
+
+// เปิดหน้าต่างรายละเอียดเมนู: รูป/วิดีโอขยาย + ชื่อ + ราคา (จากหลังบ้าน) + คำอธิบายเต็ม
+function openItemDetail(item) {
+  const overlay = document.getElementById('itemDetailOverlay');
+  const body = document.getElementById('itemDetailBody');
+  if (!overlay || !body) return;
+
+  const imgSrc = item.image || 'images/dish-laab.svg';
+  let mediaHtml = `<img src="${imgSrc}" alt="${item.name} จิ๊นโค สุพรรณบุรี">`;
+  if (item.video && isVideoFileUrl(item.video)) {
+    mediaHtml = `<video src="${item.video}" controls autoplay playsinline poster="${imgSrc}"></video>`;
+  } else if (item.video && isYouTubeUrl(item.video)) {
+    mediaHtml = `<iframe src="${toYouTubeEmbed(item.video)}" allow="autoplay; encrypted-media" allowfullscreen title="วิดีโอ ${item.name}"></iframe>`;
+  }
+
+  body.innerHTML = `
+    <div class="detail-media">${mediaHtml}</div>
+    <div class="detail-info">
+      ${item.featured ? '<span class="detail-badge">🔥 แนะนำ</span>' : ''}
+      <h3>${item.name}</h3>
+      <p class="detail-price">${menuLivePriceText(item)}</p>
+      ${item.desc ? `<p class="detail-desc">${item.desc}</p>` : ''}
+      <a class="detail-call" href="tel:0635257143">📞 โทรสั่ง 063-525-7143</a>
+    </div>
+  `;
   overlay.classList.add('open');
 }
 
-function closeMenuLiveModal() {
-  const overlay = document.getElementById('liveModalOverlay');
-  const mediaBox = document.getElementById('liveModalMedia');
+function closeItemDetail() {
+  const overlay = document.getElementById('itemDetailOverlay');
+  const body = document.getElementById('itemDetailBody');
+  if (!overlay) return;
   overlay.classList.remove('open');
-  mediaBox.innerHTML = ''; // หยุดวิดีโอ
+  // หยุดวิดีโอ/iframe ที่อาจกำลังเล่นอยู่
+  if (body) body.innerHTML = '';
 }
 
 function renderTabs(tabsContainer, categories, activeCategory, onSelect) {
@@ -164,10 +240,13 @@ async function initMenuLive() {
   renderTabs(tabsContainer, categories, activeCategory, selectCategory);
   draw();
 
-  const overlay = document.getElementById('liveModalOverlay');
-  document.getElementById('liveModalClose').addEventListener('click', closeMenuLiveModal);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeMenuLiveModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenuLiveModal(); });
+  const detailOverlay = document.getElementById('itemDetailOverlay');
+  const detailClose = document.getElementById('itemDetailClose');
+  if (detailOverlay && detailClose) {
+    detailClose.addEventListener('click', closeItemDetail);
+    detailOverlay.addEventListener('click', (e) => { if (e.target === detailOverlay) closeItemDetail(); });
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeItemDetail(); });
 }
 
 document.addEventListener('DOMContentLoaded', initMenuLive);
