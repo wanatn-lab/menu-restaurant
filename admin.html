@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="robots" content="noindex, nofollow">
 <title>หน้าแอดมิน | จิ๊นโค สุพรรณบุรี</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,6 +90,15 @@
   }
   .login-card button:disabled { opacity:0.6; cursor:default; }
   .login-error { color:#b23b3b; font-size:0.88rem; margin-top:0.8rem; min-height: 1.2em; }
+  .upload-row { display:flex; align-items:center; gap:0.6rem; margin-top:0.4rem; flex-wrap:wrap; }
+  .btn-upload {
+    font-size: 0.82rem; padding: 0.35rem 0.7rem; border-radius: 20px; border: 1px solid var(--color-wood);
+    background: #fff; color: var(--color-wood); cursor: pointer; font-family: inherit; font-weight:600;
+  }
+  .btn-upload:disabled { opacity: 0.6; cursor: default; }
+  .upload-status { font-size: 0.8rem; color: var(--color-text-soft); }
+  .upload-status.ok { color: #2f7d3c; }
+  .upload-status.err { color: #b23b3b; }
 </style>
 </head>
 <body>
@@ -149,12 +161,19 @@
         <textarea id="f-home-lead" rows="3"></textarea>
       </div>
       <div class="field">
-        <label for="f-home-image">ลิงก์รูปภาพ (URL)</label>
+        <label for="f-home-image">รูปภาพ</label>
         <div class="menu-card-top">
           <div class="thumb-preview" id="f-home-image-preview">ไม่มีรูป</div>
-          <input type="url" id="f-home-image" placeholder="https://..." style="flex:1;">
+          <div style="flex:1;min-width:0;">
+            <input type="url" id="f-home-image" placeholder="https://..." style="width:100%;">
+            <div class="upload-row">
+              <label class="btn-upload" for="f-home-image-file">📤 อัปโหลดรูปจากเครื่อง</label>
+              <input type="file" id="f-home-image-file" accept="image/*" style="display:none;">
+              <span class="upload-status" id="f-home-image-status"></span>
+            </div>
+          </div>
         </div>
-        <div class="sub">ขนาดภาพที่แนะนำ: 1600 x 700 px (แนวนอน) — ใช้เป็นภาพกว้างด้านบนหน้าแรก อัตราส่วนประมาณ 16:7</div>
+        <div class="sub">ขนาดภาพที่แนะนำ: 1600 x 700 px (แนวนอน) — ใช้เป็นภาพกว้างด้านบนหน้าแรก อัตราส่วนประมาณ 16:7 · อัปโหลดไฟล์ได้ไม่เกิน 4MB (jpg/png/webp/gif) หรือจะวางลิงก์รูปเองก็ได้</div>
       </div>
     </fieldset>
 
@@ -173,12 +192,19 @@
         <textarea id="f-about-p2" rows="2"></textarea>
       </div>
       <div class="field">
-        <label for="f-about-image">ลิงก์รูปภาพ (URL)</label>
+        <label for="f-about-image">รูปภาพ</label>
         <div class="menu-card-top">
           <div class="thumb-preview" id="f-about-image-preview">ไม่มีรูป</div>
-          <input type="url" id="f-about-image" placeholder="https://..." style="flex:1;">
+          <div style="flex:1;min-width:0;">
+            <input type="url" id="f-about-image" placeholder="https://..." style="width:100%;">
+            <div class="upload-row">
+              <label class="btn-upload" for="f-about-image-file">📤 อัปโหลดรูปจากเครื่อง</label>
+              <input type="file" id="f-about-image-file" accept="image/*" style="display:none;">
+              <span class="upload-status" id="f-about-image-status"></span>
+            </div>
+          </div>
         </div>
-        <div class="sub">ขนาดภาพที่แนะนำ: 900 x 700 px (แนวตั้ง/สี่เหลี่ยม) — ใช้คู่กับข้อความในหน้าเกี่ยวกับเรา</div>
+        <div class="sub">ขนาดภาพที่แนะนำ: 900 x 700 px (แนวตั้ง/สี่เหลี่ยม) — ใช้คู่กับข้อความในหน้าเกี่ยวกับเรา · อัปโหลดไฟล์ได้ไม่เกิน 4MB หรือจะวางลิงก์รูปเองก็ได้</div>
       </div>
     </fieldset>
 
@@ -292,6 +318,161 @@ function imgPreviewHtml(url, label) {
   return `<img src="${url}" alt="" onerror="this.parentElement.textContent='โหลดรูปไม่ได้'">`;
 }
 
+// ===================================================================
+// อัปโหลดรูป/วิดีโอจากเครื่องโดยตรง ผ่าน /api/upload (เก็บลง Netlify Blobs)
+// ===================================================================
+const UPLOAD_API = '/api/upload';
+const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // 4MB — ต้องตรงกับฝั่งฟังก์ชัน /api/upload
+const MAX_ORIGINAL_IMAGE_BYTES = 20 * 1024 * 1024; // 20MB — ไฟล์ต้นฉบับก่อนบีบอัด กันเบราว์เซอร์ค้างถ้าไฟล์ใหญ่เกินไป
+const COMPRESS_MAX_DIMENSION = 1920; // px ด้านยาวสุดหลังย่อ (พอสำหรับรูป hero และรูปเมนูทุกขนาด)
+const COMPRESS_QUALITY = 0.82;
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      const comma = result.indexOf(',');
+      resolve(comma >= 0 ? result.slice(comma + 1) : result);
+    };
+    reader.onerror = () => reject(reader.error || new Error('อ่านไฟล์ไม่สำเร็จ'));
+    reader.readAsDataURL(file);
+  });
+}
+
+// ---- ระบบบีบอัดรูปภาพฝั่งเบราว์เซอร์ (ย่อขนาด + แปลงเป็น WebP คุณภาพสูง) ----
+// ทำก่อนอัปโหลดเสมอ เพื่อให้ไฟล์เล็กลงมาก เว็บโหลดเร็วขึ้น โดยเจ้าของร้านไม่ต้องย่อรูปเอง
+function loadImageFromFile(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => resolve(img);
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('อ่านไฟล์รูปไม่สำเร็จ')); };
+    img.src = url;
+  });
+}
+
+function canvasToBlob(canvas, type, quality) {
+  return new Promise((resolve) => {
+    try { canvas.toBlob((b) => resolve(b), type, quality); } catch { resolve(null); }
+  });
+}
+
+async function compressImageFile(file) {
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  // ไม่บีบอัด svg (เป็นเวกเตอร์อยู่แล้ว) และ gif (อาจเป็นภาพเคลื่อนไหว บีบแล้วจะเสียเฟรมเคลื่อนไหว)
+  if (ext === 'svg' || ext === 'gif') return file;
+
+  let img;
+  try {
+    img = await loadImageFromFile(file);
+  } catch {
+    return file; // อ่านรูปไม่ได้ ใช้ไฟล์เดิมแทน ให้ฝั่งเซิร์ฟเวอร์ตรวจสอบต่อ
+  }
+
+  let width = img.naturalWidth || img.width;
+  let height = img.naturalHeight || img.height;
+  const longEdge = Math.max(width, height);
+  if (longEdge > COMPRESS_MAX_DIMENSION) {
+    const scale = COMPRESS_MAX_DIMENSION / longEdge;
+    width = Math.round(width * scale);
+    height = Math.round(height * scale);
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, width, height);
+  URL.revokeObjectURL(img.src);
+
+  // ลองแปลงเป็น WebP ก่อน (ไฟล์เล็กที่สุด) ถ้าเบราว์เซอร์ไม่รองรับจะ fallback เป็น JPEG
+  let blob = await canvasToBlob(canvas, 'image/webp', COMPRESS_QUALITY);
+  let outExt = 'webp';
+  if (!blob || blob.type !== 'image/webp') {
+    blob = await canvasToBlob(canvas, 'image/jpeg', COMPRESS_QUALITY);
+    outExt = 'jpg';
+  }
+  if (!blob || !blob.size) return file; // บีบอัดไม่สำเร็จ ใช้ไฟล์เดิม
+
+  // ถ้าบีบอัดแล้วไม่ได้เล็กลง (เช่นไฟล์ต้นฉบับเล็ก/บีบอัดมาแล้ว) ใช้ไฟล์เดิมดีกว่า
+  if (blob.size >= file.size) return file;
+
+  const newName = file.name.replace(/\.[a-zA-Z0-9]+$/, '') + '.' + outExt;
+  return new File([blob], newName, { type: blob.type });
+}
+
+async function uploadMediaFile(file, onStatus) {
+  if (!adminUser || !adminKey) {
+    throw new Error('กรุณาเข้าสู่ระบบก่อนอัปโหลด');
+  }
+  const isImage = /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name);
+  let uploadFile = file;
+  if (isImage) {
+    if (file.size > MAX_ORIGINAL_IMAGE_BYTES) {
+      throw new Error(`ไฟล์รูปใหญ่เกินไป (${(file.size / 1024 / 1024).toFixed(1)}MB) กรุณาเลือกไฟล์ขนาดไม่เกิน 20MB`);
+    }
+    if (onStatus) onStatus('กำลังบีบอัดรูป…');
+    const originalSize = file.size;
+    uploadFile = await compressImageFile(file);
+    if (onStatus && uploadFile !== file) {
+      const savedPct = Math.round((1 - uploadFile.size / originalSize) * 100);
+      onStatus(`บีบอัดจาก ${(originalSize / 1024 / 1024).toFixed(1)}MB เหลือ ${(uploadFile.size / 1024).toFixed(0)}KB (ลด ${savedPct}%) กำลังอัปโหลด…`);
+    } else if (onStatus) {
+      onStatus('กำลังอัปโหลด…');
+    }
+  } else if (onStatus) {
+    onStatus('กำลังอัปโหลด…');
+  }
+  if (uploadFile.size > MAX_UPLOAD_BYTES) {
+    throw new Error(`ไฟล์ใหญ่เกินไป (${(uploadFile.size / 1024 / 1024).toFixed(1)}MB) อัปโหลดได้ไม่เกิน 4MB ต่อไฟล์ ลองย่อขนาดไฟล์ก่อนแล้วลองใหม่`);
+  }
+  const dataBase64 = await fileToBase64(uploadFile);
+  const res = await fetch(UPLOAD_API, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ auth: { user: adminUser, pass: adminKey }, filename: uploadFile.name, dataBase64 })
+  });
+  let data = {};
+  try { data = await res.json(); } catch {}
+  if (!res.ok) {
+    if (res.status === 401) {
+      localStorage.removeItem('jinko_admin_user');
+      localStorage.removeItem('jinko_admin_key');
+      adminUser = '';
+      adminKey = '';
+      showLoginGate('เซสชันหมดอายุหรือรหัสไม่ถูกต้อง กรุณาเข้าสู่ระบบใหม่');
+    }
+    throw new Error(data.error || ('อัปโหลดไม่สำเร็จ (' + res.status + ')'));
+  }
+  return data.url;
+}
+
+// ผูกปุ่ม "อัปโหลด" + input[type=file] เข้ากับช่อง URL เป้าหมาย (ใช้กับรูป hero ของหน้าแรก/เกี่ยวกับเรา)
+function wireStaticUpload(fileInputId, targetInputId, statusId) {
+  const fileInput = el(fileInputId);
+  const targetInput = el(targetInputId);
+  const statusEl = el(statusId);
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    statusEl.textContent = 'กำลังเตรียมไฟล์…';
+    statusEl.className = 'upload-status';
+    try {
+      const url = await uploadMediaFile(file, (msg) => { statusEl.textContent = msg; });
+      targetInput.value = url;
+      targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+      statusEl.textContent = '✓ อัปโหลดสำเร็จ';
+      statusEl.className = 'upload-status ok';
+    } catch (err) {
+      statusEl.textContent = '✗ ' + err.message;
+      statusEl.className = 'upload-status err';
+    } finally {
+      fileInput.value = '';
+    }
+  });
+}
+
 async function loadContent() {
   try {
     const res = await fetch(API, { cache: 'no-store' });
@@ -328,6 +509,9 @@ function fillForm() {
   el('f-about-image').addEventListener('input', e => {
     el('f-about-image-preview').innerHTML = imgPreviewHtml(e.target.value);
   });
+
+  wireStaticUpload('f-home-image-file', 'f-home-image', 'f-home-image-status');
+  wireStaticUpload('f-about-image-file', 'f-about-image', 'f-about-image-status');
 
   renderMenuItems();
 }
@@ -369,7 +553,12 @@ function renderMenuItems() {
             <div class="field" style="margin-bottom:0.5rem;">
               <label>ลิงก์รูปภาพ</label>
               <input type="url" data-field="image" value="${escapeHtml(item.image || '')}" placeholder="https://...">
-              <div class="sub">แนะนำ 700 x 700 px (จัตุรัส)</div>
+              <div class="upload-row">
+                <button type="button" class="btn-upload" data-upload-trigger="image">📤 อัปโหลดรูป</button>
+                <input type="file" accept="image/*" data-upload-file="image" style="display:none;">
+                <span class="upload-status" data-upload-status="image"></span>
+              </div>
+              <div class="sub">แนะนำ 700 x 700 px (จัตุรัส) · อัปโหลดไฟล์ได้ไม่เกิน 4MB</div>
             </div>
           </div>
           <div class="field" style="margin-bottom:0.5rem;">
@@ -379,6 +568,12 @@ function renderMenuItems() {
           <div class="field" style="margin-bottom:0.3rem;">
             <label>ลิงก์วิดีโอ (YouTube หรือไฟล์ .mp4) — ไม่บังคับ</label>
             <input type="url" data-field="video" value="${escapeHtml(item.video || '')}" placeholder="https://youtu.be/...">
+            <div class="upload-row">
+              <button type="button" class="btn-upload" data-upload-trigger="video">📤 อัปโหลดวิดีโอ</button>
+              <input type="file" accept="video/*" data-upload-file="video" style="display:none;">
+              <span class="upload-status" data-upload-status="video"></span>
+            </div>
+            <div class="sub">อัปโหลดไฟล์ได้ไม่เกิน 4MB — ถ้าวิดีโอไฟล์ใหญ่กว่านี้ แนะนำอัปโหลดขึ้น YouTube แล้ววางลิงก์แทน</div>
           </div>
           <label class="featured-check">
             <input type="checkbox" data-field="featured" ${item.featured ? 'checked' : ''}>
@@ -402,6 +597,34 @@ function renderMenuItems() {
           card.querySelector('[data-role="preview"]').innerHTML = imgPreviewHtml(input.value);
         }
         if (field === 'category') renderCategoryOptions();
+      });
+    });
+
+    card.querySelectorAll('[data-upload-file]').forEach(fileInput => {
+      const kind = fileInput.dataset.uploadFile; // 'image' หรือ 'video'
+      const targetInput = card.querySelector(`[data-field="${kind}"]`);
+      const statusEl = card.querySelector(`[data-upload-status="${kind}"]`);
+      const triggerBtn = card.querySelector(`[data-upload-trigger="${kind}"]`);
+      triggerBtn.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        statusEl.textContent = 'กำลังเตรียมไฟล์…';
+        statusEl.className = 'upload-status';
+        triggerBtn.disabled = true;
+        try {
+          const url = await uploadMediaFile(file, (msg) => { statusEl.textContent = msg; });
+          targetInput.value = url;
+          targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+          statusEl.textContent = '✓ สำเร็จ';
+          statusEl.className = 'upload-status ok';
+        } catch (err) {
+          statusEl.textContent = '✗ ' + err.message;
+          statusEl.className = 'upload-status err';
+        } finally {
+          fileInput.value = '';
+          triggerBtn.disabled = false;
+        }
       });
     });
 
