@@ -170,7 +170,7 @@ function openItemDetail(item) {
       <h3>${item.name}</h3>
       <p class="detail-price">${menuLivePriceText(item)}</p>
       ${item.desc ? `<p class="detail-desc">${item.desc}</p>` : ''}
-      <a class="detail-call" href="tel:0635257143">📞 โทรสั่ง 063-525-7143</a>
+      <a class="detail-call" href="tel:0930309164">📞 โทรสั่ง 093-030-9164</a>
     </div>
   `;
   overlay.classList.add('open');
