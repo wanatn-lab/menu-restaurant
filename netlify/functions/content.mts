@@ -12,14 +12,40 @@ import { getStore } from "@netlify/blobs";
 const STORE_NAME = "site-content";
 const KEY = "content";
 
+// Keep the business facts in one canonical place.  Content written through the
+// admin UI is editorial; it must not be able to accidentally re-publish an old
+// address, opening hours, or phone number in the public API.
+const BUSINESS_FACTS = {
+  name: "จิ๊นโค สุพรรณบุรี",
+  telephone: "093-030-9164",
+  address: "ถนนขุนศรีวิชัย",
+  locality: "ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี",
+  region: "สุพรรณบุรี",
+  postalCode: "72000",
+  countryCode: "TH",
+  latitude: "14.476954",
+  longitude: "100.1163608",
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=14.476954%2C100.1163608",
+  facebookUrl: "https://www.facebook.com/jinkosuphan/",
+  openingHoursText: "อังคาร–อาทิตย์ 11:30–20:00 น. (หยุดวันจันทร์)",
+  openingHours: [
+    { day: "Tuesday", opens: "11:30", closes: "20:00" },
+    { day: "Wednesday", opens: "11:30", closes: "20:00" },
+    { day: "Thursday", opens: "11:30", closes: "20:00" },
+    { day: "Friday", opens: "11:30", closes: "20:00" },
+    { day: "Saturday", opens: "11:30", closes: "20:00" },
+    { day: "Sunday", opens: "11:30", closes: "20:00" }
+  ]
+};
+
 // เนื้อหาเริ่มต้น (ตรงกับหน้าเว็บปัจจุบัน) ใช้ตอนยังไม่มีใครบันทึกอะไรผ่านแอดมินเลย
 const DEFAULT_CONTENT = {
-  announceBar: "🎉 เตรียมเปิดร้าน ตุลาคม 2569 ที่ถนนขุนช้าง สุพรรณบุรี — กดติดตามไว้ก่อนใครที่นี่",
+  announceBar: "🎉 เปิดให้บริการแล้วที่ถนนขุนศรีวิชัย สุพรรณบุรี — แวะมาชิมอาหารเหนือแท้ได้เลย",
   home: {
     heroHeading: "จิ๊นโค สุพรรณบุรี — อาหารเหนือต้นตำรับ ถึงถิ่นไม่ต้องไปไกล",
     heroLead:
-      "ร้าน จิ๊นโค สไตล์บ้านๆ กันเอง เสิร์ฟอาหารเหนือรสชาติจัดจ้านต้นตำรับ ตั้งแต่ลาบเหนือคั่วหอมเครื่องเทศ ไส้อั่ว น้ำพริกหนุ่ม ไปจนถึงแคปหมูกรอบ ราคาเริ่มต้นหลักสิบบาท ตั้งอยู่บนถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี ในซอยติดร้านป้ารัตน์ อาหารตามสั่ง",
-    heroImage: "images/hero-spread.svg"
+      "ร้านจิ๊นโคสไตล์บ้านๆ กันเอง เสิร์ฟอาหารเหนือรสชาติจัดจ้านต้นตำรับ ตั้งแต่ลาบเหนือคั่วหอมเครื่องเทศ ไส้อั่ว น้ำพริกหนุ่ม ไปจนถึงแคบหมูกรอบ ราคาเริ่มต้นหลักสิบบาท ตั้งอยู่บนถนนขุนศรีวิชัย ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี",
+    heroImage: "/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg"
   },
   about: {
     heroHeading: "จากเพจรีวิวอาหาร สู่ร้านจิ๊นโคของตัวเอง",
@@ -27,18 +53,18 @@ const DEFAULT_CONTENT = {
       "ก่อนจะเป็นร้านจิ๊นโค สุพรรณบุรี เจ้าของร้านคือคนทำเพจรีวิวร้านอาหารระดับภูมิภาคมาก่อน ผ่านการชิม วิเคราะห์ และแนะนำร้านอาหารเหนือ ร้านลาบ และร้านอาหารท้องถิ่นมานับไม่ถ้วน จนอยากลงมือทำร้านอาหารเหนือต้นตำรับของตัวเองให้คนสุพรรณบุรีได้ลิ้มลอง โดยไม่ต้องเดินทางไกลถึงภาคเหนือ",
     heroParagraph2:
       "ชื่อร้าน “จิ๊นโค” มาจากภาษาเหนือ คำว่า “จิ๊น” แปลว่า เนื้อ ส่วน “โค” หมายถึงวัว ถ้าค้นหาด้วยคำว่า จิ้นโค หรือ จินโค ก็เจอร้านเราได้เช่นกัน",
-    heroImage: "images/dish-laab.svg"
+    heroImage: "/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg"
   },
   menuItems: [
-    { category: "ของทอด & ปิ้งย่าง", name: "ไก่ทอด", price: "เริ่มต้น", desc: "ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน", image: "images/dish-kaithod.svg", video: "", featured: true },
+    { category: "ของทอด & ปิ้งย่าง", name: "ไก่ทอด", price: "70", desc: "ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน", image: "/api/media?key=uploads%2Fimage%2F2026-10%2F649a5a89dee28d51.webp", video: "", featured: true },
     { category: "ของทอด & ปิ้งย่าง", name: "ปลาทู", price: "เริ่มต้น", desc: "ปลาทูทอดสดใหม่ทุกวัน เนื้อแน่นหอมมัน", image: "", video: "", featured: false },
     { category: "ของทอด & ปิ้งย่าง", name: "ปลาสลิด", price: "เริ่มต้น", desc: "ปลาสลิดทอดกรอบ เนื้อแน่น รสเค็มมันกำลังดี", image: "", video: "", featured: false },
-    { category: "ของทอด & ปิ้งย่าง", name: "สามชั้นทอด", price: "เริ่มต้น", desc: "หมูสามชั้นทอดกรอบนอกนุ่มใน เสิร์ฟพร้อมน้ำจิ้มแจ่วรสจัด", image: "images/dish-samchan.svg", video: "", featured: false },
-    { category: "ของทอด & ปิ้งย่าง", name: "แคบหมู", price: "เริ่มต้น", desc: "แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้", image: "images/dish-kaepmoo.svg", video: "", featured: true },
+    { category: "ของทอด & ปิ้งย่าง", name: "สามชั้นทอด", price: "85", desc: "หมูสามชั้นทอดกรอบนอกนุ่มใน เสิร์ฟพร้อมน้ำจิ้มแจ่วรสจัด", image: "/api/media?key=uploads%2Fimage%2F2026-10%2Fdf97393f98383d8f.webp", video: "", featured: false },
+    { category: "ของทอด & ปิ้งย่าง", name: "แคบหมู", price: "30", desc: "แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้", image: "/api/media?key=uploads%2Fimage%2F2026-08%2Fda960607-6ce9-4290-a83e-9129d6302835.webp", video: "", featured: true },
     { category: "ของทอด & ปิ้งย่าง", name: "เนื้อแดดเดียวทอด", price: "เริ่มต้น", desc: "เนื้อแดดเดียวทอดสูตรเหนือแท้ เค็มนัวหอมพริกไทย", image: "", video: "", featured: false },
     { category: "ของทอด & ปิ้งย่าง", name: "เนื้อย่าง", price: "เริ่มต้น", desc: "เนื้อย่างหอมควัน หมักเครื่องเทศสูตรร้าน เสิร์ฟพร้อมน้ำจิ้มแจ่ว", image: "", video: "", featured: false },
     { category: "น้ำพริก & เครื่องเคียง", name: "ไข่ต้มยางมะตูม", price: "เริ่มต้น", desc: "ไข่ต้มยางมะตูม เครื่องเคียงคู่น้ำพริกขาดไม่ได้", image: "", video: "", featured: false },
-    { category: "น้ำพริก & เครื่องเคียง", name: "พริกหนุ่มปิ้งตำ", price: "เริ่มต้น", desc: "พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคปหมูและผักสดตามฤดูกาล", image: "images/dish-namprik.svg", video: "", featured: true },
+    { category: "น้ำพริก & เครื่องเคียง", name: "พริกหนุ่มปิ้งตำ", price: "30", desc: "พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคปหมูและผักสดตามฤดูกาล", image: "/api/media?key=uploads%2Fimage%2F2026-10%2F9305f01acfc29dea.webp", video: "", featured: true },
     { category: "น้ำพริก & เครื่องเคียง", name: "พริกแดงเหนือ", price: "เริ่มต้น", desc: "น้ำพริกแดงสูตรเหนือ รสเข้มข้น เผ็ดหอมเครื่องแกง", image: "", video: "", featured: false },
     { category: "น้ำพริก & เครื่องเคียง", name: "ป่นน้ำปู๋ (สูตรเค้ง)", price: "เริ่มต้น", desc: "ป่นน้ำปู๋สูตรเค้ง เอกลักษณ์เฉพาะร้าน รสเข้มข้นแบบล้านนาแท้", image: "", video: "", featured: true },
     { category: "พิเศษ", name: "อ่องปูแสม", price: "เริ่มต้น", desc: "อ่องปูแสม แกงคั่วรสจัดจ้าน กลิ่นหอมเครื่องแกงเหนือ", image: "", video: "", featured: true },
@@ -57,11 +83,10 @@ function json(data, status = 200) {
 
 function normalizeAnnouncement(value) {
   const text = String(value || "").trim();
-  if (/^🎉\s*เตรียมเปิดร้าน\s+/.test(text) && !/ตุลาคม\s*2569/.test(text) && /สุพรรณบุรี/.test(text)) {
-    const place = text.replace(/^🎉\s*เตรียมเปิดร้าน\s*/, "").replace(/\s*สุพรรณบุรี.*$/, "").trim();
-    return `🎉 เตรียมเปิดร้าน ตุลาคม 2569 ที่${place} สุพรรณบุรี — กดติดตามไว้ก่อนใครที่นี่`;
+  if (/ถนนขุนช้าง|ป้ารัตน์|เตรียมเปิดร้าน/.test(text)) {
+    return "🎉 เปิดให้บริการแล้วที่ถนนขุนศรีวิชัย สุพรรณบุรี — แวะมาชิมอาหารเหนือแท้ได้เลย";
   }
-  return value;
+  return text || DEFAULT_CONTENT.announceBar;
 }
 
 function normalizeFaqItems(items) {
@@ -73,13 +98,64 @@ function normalizeFaqItems(items) {
   }));
 }
 
-function normalizeContent(content) {
-  if (!content || typeof content !== "object") return content;
+function replaceOldStoreFacts(value) {
+  return String(value || "")
+    .replaceAll("ถนนขุนช้าง", "ถนนขุนศรีวิชัย")
+    .replace(/\s*(?:ใน)?ซอยติดร้านป้ารัตน์\s*(?:อาหารตามสั่ง)?/g, "")
+    .replace(/ทุกวัน\s*(?:08:00|12:00)\s*[–-]\s*20:00\s*น?\.?/g, BUSINESS_FACTS.openingHoursText);
+}
+
+function normalizeBusinessFacts(content) {
+  const business = content.business && typeof content.business === "object" ? content.business : {};
+  const contact = content.contact && typeof content.contact === "object" ? content.contact : {};
+  const home = content.home && typeof content.home === "object" ? content.home : {};
+  const faq = normalizeFaqItems(content.faq);
+
   return {
     ...content,
-    announceBar: normalizeAnnouncement(content.announceBar),
-    faq: normalizeFaqItems(content.faq)
+    home: {
+      ...home,
+      heroLead: replaceOldStoreFacts(home.heroLead),
+      heroImage: home.heroImage && !String(home.heroImage).endsWith(".svg")
+        ? home.heroImage
+        : "/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg"
+    },
+    about: {
+      ...(content.about || {}),
+      heroImage: content.about?.heroImage && !String(content.about.heroImage).endsWith(".svg")
+        ? content.about.heroImage
+        : "/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg"
+    },
+    business: { ...business, ...BUSINESS_FACTS },
+    contact: {
+      ...contact,
+      phone: BUSINESS_FACTS.telephone,
+      mapsUrl: BUSINESS_FACTS.mapUrl,
+      streetAddress: BUSINESS_FACTS.address,
+      addressLocality: BUSINESS_FACTS.locality,
+      addressRegion: BUSINESS_FACTS.region,
+      postalCode: BUSINESS_FACTS.postalCode,
+      latitude: BUSINESS_FACTS.latitude,
+      longitude: BUSINESS_FACTS.longitude,
+      openingHours: "Tu-Su 11:30-20:00"
+    },
+    faq: Array.isArray(faq)
+      ? faq.map((item) => ({
+        ...item,
+        answer: /เปิดวันไหน/.test(String(item.question || ""))
+          ? "เปิดอังคาร–อาทิตย์ เวลา 11:30–20:00 น. และหยุดทุกวันจันทร์"
+          : replaceOldStoreFacts(item.answer)
+      }))
+      : faq
   };
+}
+
+function normalizeContent(content) {
+  if (!content || typeof content !== "object") return content;
+  return normalizeBusinessFacts({
+    ...content,
+    announceBar: replaceOldStoreFacts(normalizeAnnouncement(content.announceBar)),
+  });
 }
 
 // ตรวจรูปแบบข้อมูลคร่าวๆ ก่อนบันทึก ป้องกันข้อมูลพังทั้งเว็บ
