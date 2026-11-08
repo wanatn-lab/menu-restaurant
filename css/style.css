@@ -184,7 +184,7 @@ nav.main-nav a:hover, nav.main-nav a[aria-current="page"] {
 .photo-placeholder .hint { font-size: 0.72rem; font-weight: 400; margin-top: 0.4rem; opacity: 0.75; }
 .hero-photo { min-height: 320px; box-shadow: var(--shadow); }
 
-/* ---------- Dish mockup illustrations (ภาพจำลองจานอาหาร โทนน้ำตาลอ่อน) ---------- */
+/* ---------- Menu image card layout ---------- */
 .dish-mockup {
   background: linear-gradient(135deg, var(--color-cream-2), var(--color-cream));
   border-radius: var(--radius);
@@ -569,3 +569,32 @@ body.modal-open { overflow: hidden; }
   margin-top: 2.4rem;
 }
 .live-cta-strip p { margin: 0 0 0.9rem; color: #f0e2cd; }
+
+/* Static menu content remains readable before live data loads and in the
+   original HTML source for search crawlers. */
+.menu-crawlable-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .75rem;
+  margin: .75rem 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.menu-crawlable-list li {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  min-height: 3.5rem;
+  padding: .45rem .65rem;
+  background: #fff;
+  border: 1px solid var(--color-cream-2);
+  border-radius: .7rem;
+}
+.menu-crawlable-list img {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  border-radius: .45rem;
+  object-fit: cover;
+}
+.menu-crawlable-list strong { margin-left: auto; color: var(--color-red-dark); white-space: nowrap; }

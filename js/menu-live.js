@@ -9,11 +9,11 @@
 // ข้อมูลเมนูสำรอง ใช้แสดงผลถ้าดึงจาก /api/content ไม่สำเร็จ
 // (เช่น ฟังก์ชันยังไม่ได้ deploy หรือเปิดไฟล์ตรงในเครื่องโดยไม่มีเซิร์ฟเวอร์)
 const MENU_LIVE_FALLBACK = [
-  { category: 'ของทอด & ปิ้งย่าง', name: 'ไก่ทอด', price: '60', desc: 'ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน', image: 'images/dish-kaithod.svg', video: '', featured: false },
-  { category: 'ของทอด & ปิ้งย่าง', name: 'ไส้อั่วโฮมเมด', price: '60', desc: 'ไส้อั่วหอมๆ เครื่องเทศแน่น รสเข้มข้น กับสูตรโฮมเมดของเราเอง', image: 'images/dish-saiua.svg', video: '', featured: true },
-  { category: 'ของทอด & ปิ้งย่าง', name: 'แคบหมู', price: '30', desc: 'แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้', image: 'images/dish-kaepmoo.svg', video: '', featured: true },
-  { category: 'น้ำพริก & เครื่องเคียง', name: 'พริกหนุ่มปิ้งตำ', price: '30', desc: 'พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคบหมูและผักสดตามฤดูกาล', image: 'images/dish-namprik.svg', video: '', featured: true },
-  { category: 'น้ำพริก & เครื่องเคียง', name: 'ป่นน้ำปู๋ (สูตรเค้ง)', price: '100', desc: 'ป่นน้ำปู๋สูตรเค้ง เอกลักษณ์เฉพาะร้าน รสเข้มข้นแบบล้านนาแท้', image: 'images/dish-laab.svg', video: '', featured: true },
+  { category: 'ของทอด & ปิ้งย่าง', name: 'ไก่ทอด', price: '70', desc: 'ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน', image: '/api/media?key=uploads%2Fimage%2F2026-10%2F649a5a89dee28d51.webp', video: '', featured: false },
+  { category: 'ของทอด & ปิ้งย่าง', name: 'ไส้อั่วโฮมเมด', price: '70', desc: 'ไส้อั่วหอมๆ เครื่องเทศแน่น รสเข้มข้น กับสูตรโฮมเมดของเราเอง', image: '/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg', video: '', featured: true },
+  { category: 'ของทอด & ปิ้งย่าง', name: 'แคบหมู', price: '30', desc: 'แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้', image: '/api/media?key=uploads%2Fimage%2F2026-08%2Fda960607-6ce9-4290-a83e-9129d6302835.webp', video: '', featured: true },
+  { category: 'น้ำพริก & เครื่องเคียง', name: 'พริกหนุ่มปิ้งตำ', price: '30', desc: 'พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคบหมูและผักสดตามฤดูกาล', image: '/api/media?key=uploads%2Fimage%2F2026-10%2F9305f01acfc29dea.webp', video: '', featured: true },
+  { category: 'พิเศษ', name: 'อ่องปูนา', price: '80', desc: 'อ่องปูแสม แกงคั่วรสจัดจ้าน กลิ่นหอมเครื่องแกงเหนือ', image: '/api/media?key=uploads%2Fimage%2F2026-10%2F2e84e683819118fc.webp', video: '', featured: true },
   { category: 'พิเศษ', name: 'อ่องปูแสม', price: '100', desc: 'อ่องปูแสม แกงคั่วรสจัดจ้าน กลิ่นหอมเครื่องแกงเหนือ', image: '', video: '', featured: true },
   { category: 'พิเศษ', name: 'ข้าวซอยเนื้อ/ไก่', price: '70', desc: 'ข้าวซอยเนื้อ/ไก่ น้ำแกงเข้มข้น หอมเครื่องแกงเหนือ โรยหน้าเส้นกรอบ', image: '', video: '', featured: true }
 ];
@@ -74,7 +74,7 @@ function renderSkeleton(container, count = 6) {
 function buildCard(item) {
   const card = document.createElement('div');
   card.className = 'live-card';
-  const imgSrc = item.image || 'images/dish-laab.svg';
+  const imgSrc = item.image || '/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg';
   const hasInlineVideo = !!item.video && isVideoFileUrl(item.video);
   const hasOtherMedia = !!item.video && !hasInlineVideo;
 
@@ -155,7 +155,7 @@ function openItemDetail(item) {
   const body = document.getElementById('itemDetailBody');
   if (!overlay || !body) return;
 
-  const imgSrc = item.image || 'images/dish-laab.svg';
+  const imgSrc = item.image || '/api/media?key=uploads%2Fimage%2F2026-08%2F090b0fe3-06bf-4950-8652-296d3cab9cf6.jpg';
   let mediaHtml = `<img src="${imgSrc}" alt="${item.name} จิ๊นโค สุพรรณบุรี">`;
   if (item.video && isVideoFileUrl(item.video)) {
     mediaHtml = `<video src="${item.video}" controls autoplay playsinline poster="${imgSrc}"></video>`;
