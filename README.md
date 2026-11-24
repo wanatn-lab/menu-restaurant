@@ -62,7 +62,7 @@ netlify deploy --prod
 ### 4. ตั้งค่า Google Business Profile (สำคัญที่สุดสำหรับ "ติด Google สถานที่แนะนำ")
 สรุปสั้นๆ:
 1. สร้างโปรไฟล์ที่ business.google.com ด้วยชื่อร้าน
-2. ใส่ที่อยู่ ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี ให้ตรงกับในเว็บไซต์ 100% (NAP ต้องตรงกันทุกช่องทาง)
+2. ใส่ที่อยู่ ถนนขุนศรีวิชัย ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี ให้ตรงกับในเว็บไซต์ 100% (NAP ต้องตรงกันทุกช่องทาง)
 3. เลือกหมวดหมู่หลัก "Northern Thai Restaurant" หรือ "Thai Restaurant" + หมวดรอง 3-5 หมวด
 4. ถ้ายังไม่เปิดร้าน ให้ตั้งสถานะ "Opening soon" พร้อมวันที่คาดว่าจะเปิด (ตุลาคม 2569)
 5. ยืนยันตัวตน (verify) ตามขั้นตอนที่ Google กำหนด
@@ -74,11 +74,24 @@ netlify deploy --prod
 3. ใช้เครื่องมือ "URL Inspection" กด Request Indexing ทีละหน้าเพื่อเร่งให้ Google เก็บข้อมูล
 
 ### 6. รูปภาพ Open Graph
-สร้างไฟล์ `images/og-image.jpg` (ขนาดแนะนำ 1200x630px) ใส่รูปเมนูเด่นหรือหน้าร้าน ใช้แสดงตอนแชร์ลิงก์ในโซเชียล
+ตอนนี้ `index.html` ใช้รูปจริง (จาก `/api/media` ที่อัปโหลดผ่านหน้าแอดมิน) เป็นรูปพรีวิวตอนแชร์ลิงก์แล้ว
+ถ้าอยากเปลี่ยนเป็นรูปอื่น แก้ที่ `<meta property="og:image">` และ `image` ใน JSON-LD ของ `index.html`
 
 ### 7. หน้าเมนูไลฟ์ (menu-live.html)
-เชื่อมกับ Google Sheet เรียบร้อยแล้ว (ดู `js/menu-live.js` บรรทัด `SHEET_ID`) ถ้าจะแก้ไขวิธีตั้งค่าเพิ่มเติม
-หรือเปลี่ยนไปใช้ Sheet อื่น ดูขั้นตอนละเอียดในไฟล์ `คู่มือ-เมนูไลฟ์.md`
+ปัจจุบันดึงข้อมูลจาก `/api/content` (Netlify Function + Netlify Blobs) ที่แก้ไขผ่านหน้า `/admin` ได้เลย
+ไม่ได้ใช้ Google Sheet แล้ว ดูวิธีใช้หน้าแอดมินในไฟล์ `คู่มือ-แอดมิน.md`
+
+### 8. ถ้าจะแก้ class ของ Tailwind ในหน้าแรก (index.html)
+หน้าแรกใช้ Tailwind CSS แบบคอมไพล์ไว้ล่วงหน้าเป็นไฟล์ `css/tailwind-built.css` (ไม่ใช้ Tailwind CDN
+เพราะโหลดช้าและไม่เหมาะกับเว็บจริง) ถ้าแก้หรือเพิ่ม class ของ Tailwind ใน `index.html` ต้องรันคำสั่งนี้ใหม่ก่อน deploy
+ทุกครั้ง ไม่งั้นสไตล์ใหม่จะไม่ขึ้น:
+```
+npm install -D tailwindcss@^3
+npx tailwindcss -i ./input.css -o ./css/tailwind-built.css --minify \
+  --content ./index.html
+```
+(ต้องมีไฟล์ `input.css` ที่มี `@tailwind base; @tailwind components; @tailwind utilities;`
+และตั้งค่าสี brand.* ใน `tailwind.config.js` ให้ตรงกับที่เคยอยู่ใน `<script>tailwind.config = {...}</script>` เดิม)
 
 ## หมายเหตุด้าน SEO/GEO ที่ทำไว้ให้แล้ว
 - ทุกหน้ามี `<title>` และ `meta description` ที่มีคีย์เวิร์ด อาหารเหนือ / ลาบเหนือ / อาหารเหนือสุพรรณบุรี

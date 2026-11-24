@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<script src="/js/gtm.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -15,13 +14,12 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-52S88TCS" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <header class="site-header">
 <div class="nav-wrap">
 <a class='brand' href='/'>
 <span class="logo-mark">จ</span>
-<span>จิ๊นโค สุพรรณบุรี<small>อาหารเหนือแท้ต้นตำรับ</small></span>
+<span>จิ๊นโค สุพรรณบุรี<small>อาหารเหนือ รสปรับให้ถูกปากคนภาคกลาง</small></span>
 </a>
 <nav class="main-nav" aria-label="เมนูหลัก">
 <ul>
@@ -38,7 +36,7 @@
 <div class="container">
 <div id="liveMenuStatus" class="live-dot"><span class="dot"></span> กำลังโหลดเมนู…</div>
 <h1>เมนูไลฟ์ จิ๊นโค สุพรรณบุรี</h1>
-<p class="lead">หน้านี้ทำไว้ให้ส่งลิงก์ให้ลูกค้าดูได้ทันที รูป ราคา และวิดีโอจะอัปเดตตามข้อมูลล่าสุดของร้าน — กดที่รูปเมนูที่มีไอคอน ▶ เพื่อดูวิดีโอ</p>
+<p class="lead">หน้านี้ทำไว้ให้ส่งลิงก์ให้ลูกค้าดูได้ทันที รูป ราคา และวิดีโอจะอัปเดตอัตโนมัติทุกครั้งที่เจ้าของร้านแก้ในชีตเมนู — กดที่รูปเมนูที่มีไอคอน ▶ เพื่อดูวิดีโอ</p>
 </div>
 </section>
 
@@ -56,18 +54,18 @@
 </section>
 
 <footer class="site-footer">
-<div class="container footer-bottom">© 2026 จิ๊นโค สุพรรณบุรี — ถนนขุนช้าง ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี จ.สุพรรณบุรี 72000</div>
+<div class="container footer-bottom">© 2026 จิ๊นโค สุพรรณบุรี — ถนนขุนศรีวิชัย ต.ท่าพี่เลี้ยง อ.เมืองสุพรรณบุรี จ.สุพรรณบุรี 72000</div>
 </footer>
 
 <!-- Modal: รายละเอียดเมนู (คลิกที่การ์ดเมนูเพื่อดู) -->
-<div id="itemDetailOverlay" class="live-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="liveModalTitle" tabindex="-1">
+<div id="itemDetailOverlay" class="live-modal-overlay">
 <div class="live-modal-inner">
-<h2 id="liveModalTitle" class="sr-only">รายละเอียดเมนู</h2>
 <div class="item-detail-box" id="itemDetailBody"></div>
 <button id="itemDetailClose" class="live-modal-close" aria-label="ปิด">✕</button>
 </div>
 </div>
 
 <script src="js/menu-live.js"></script>
+<script src="js/site-phone.js" defer></script>
 </body>
 </html>
