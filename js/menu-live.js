@@ -11,9 +11,9 @@
 const MENU_LIVE_FALLBACK = [
   { category: 'ของทอด & ปิ้งย่าง', name: 'ไก่ทอด', price: '60', desc: 'ไก่ทอดสมุนไพรกรอบนอกฉ่ำใน หมักด้วยเครื่องเทศแบบร้าน', image: 'images/dish-kaithod.svg', video: '', featured: false },
   { category: 'ของทอด & ปิ้งย่าง', name: 'ไส้อั่วโฮมเมด', price: '60', desc: 'ไส้อั่วหอมๆ เครื่องเทศแน่น รสเข้มข้น กับสูตรโฮมเมดของเราเอง', image: 'images/dish-saiua.svg', video: '', featured: true },
-  { category: 'ของทอด & ปิ้งย่าง', name: 'แคบหมู', price: '30', desc: 'แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมูแท้', image: 'images/dish-kaepmoo.svg', video: '', featured: true },
+  { category: 'ของทอด & ปิ้งย่าง', name: 'แคบหมู', price: '30', desc: 'แคบหมูทอดกรอบ เคี้ยวมัน หอมกลิ่นหมู', image: 'images/dish-kaepmoo.svg', video: '', featured: true },
   { category: 'น้ำพริก & เครื่องเคียง', name: 'พริกหนุ่มปิ้งตำ', price: '30', desc: 'พริกหนุ่มปิ้งตำสด รสกลมกล่อม เสิร์ฟพร้อมแคบหมูและผักสดตามฤดูกาล', image: 'images/dish-namprik.svg', video: '', featured: true },
-  { category: 'น้ำพริก & เครื่องเคียง', name: 'ป่นน้ำปู๋ (สูตรเค้ง)', price: '100', desc: 'ป่นน้ำปู๋สูตรเค้ง เอกลักษณ์เฉพาะร้าน รสเข้มข้นแบบล้านนาแท้', image: 'images/dish-laab.svg', video: '', featured: true },
+  { category: 'น้ำพริก & เครื่องเคียง', name: 'ป่นน้ำปู๋ (สูตรเค้ง)', price: '100', desc: 'ป่นน้ำปู๋สูตรเค้ง เอกลักษณ์เฉพาะร้าน รสเข้มข้นแบบล้านนา', image: 'images/dish-laab.svg', video: '', featured: true },
   { category: 'พิเศษ', name: 'อ่องปูแสม', price: '100', desc: 'อ่องปูแสม แกงคั่วรสจัดจ้าน กลิ่นหอมเครื่องแกงเหนือ', image: '', video: '', featured: true },
   { category: 'พิเศษ', name: 'ข้าวซอยเนื้อ/ไก่', price: '70', desc: 'ข้าวซอยเนื้อ/ไก่ น้ำแกงเข้มข้น หอมเครื่องแกงเหนือ โรยหน้าเส้นกรอบ', image: '', video: '', featured: true }
 ];
@@ -174,12 +174,6 @@ function openItemDetail(item) {
     </div>
   `;
   overlay.classList.add('open');
-  overlay.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('modal-open');
-  window.__jinkoPreviousFocus = document.activeElement;
-  const title = document.getElementById('liveModalTitle');
-  if (title) title.textContent = `รายละเอียดเมนู ${item.name}`;
-  document.getElementById('itemDetailClose')?.focus();
 }
 
 function closeItemDetail() {
@@ -187,12 +181,8 @@ function closeItemDetail() {
   const body = document.getElementById('itemDetailBody');
   if (!overlay) return;
   overlay.classList.remove('open');
-  overlay.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('modal-open');
   // หยุดวิดีโอ/iframe ที่อาจกำลังเล่นอยู่
   if (body) body.innerHTML = '';
-  if (window.__jinkoPreviousFocus && typeof window.__jinkoPreviousFocus.focus === 'function') window.__jinkoPreviousFocus.focus();
-  window.__jinkoPreviousFocus = null;
 }
 
 function renderTabs(tabsContainer, categories, activeCategory, onSelect) {
@@ -200,7 +190,6 @@ function renderTabs(tabsContainer, categories, activeCategory, onSelect) {
   const allBtn = document.createElement('button');
   allBtn.textContent = 'ทั้งหมด';
   allBtn.className = activeCategory === 'ทั้งหมด' ? 'active' : '';
-  allBtn.setAttribute('aria-pressed', String(activeCategory === 'ทั้งหมด'));
   allBtn.addEventListener('click', () => onSelect('ทั้งหมด'));
   tabsContainer.appendChild(allBtn);
 
@@ -208,7 +197,6 @@ function renderTabs(tabsContainer, categories, activeCategory, onSelect) {
     const btn = document.createElement('button');
     btn.textContent = cat;
     btn.className = activeCategory === cat ? 'active' : '';
-    btn.setAttribute('aria-pressed', String(activeCategory === cat));
     btn.addEventListener('click', () => onSelect(cat));
     tabsContainer.appendChild(btn);
   });
@@ -226,8 +214,8 @@ async function initMenuLive() {
 
   if (statusEl) {
     statusEl.innerHTML = live
-      ? '<span class="dot"></span> ข้อมูลล่าสุดจากร้าน'
-      : '<span class="dot"></span> กำลังแสดงเมนูตัวอย่าง (ร้านยังไม่ได้อัปเดตเมนู)';
+      ? '<span class="dot"></span> ข้อมูลล่าสุดจากหน้าแอดมินของร้าน'
+      : '<span class="dot"></span> กำลังแสดงเมนูตัวอย่าง (ยังไม่ได้บันทึกเมนูผ่านหน้าแอดมิน)';
   }
 
   const categories = [...new Set(items.map(i => i.category))];
@@ -258,18 +246,7 @@ async function initMenuLive() {
     detailClose.addEventListener('click', closeItemDetail);
     detailOverlay.addEventListener('click', (e) => { if (e.target === detailOverlay) closeItemDetail(); });
   }
-  document.addEventListener('keydown', (e) => {
-    if (!detailOverlay || !detailOverlay.classList.contains('open')) return;
-    if (e.key === 'Escape') { closeItemDetail(); return; }
-    if (e.key === 'Tab') {
-      const focusables = [...detailOverlay.querySelectorAll('button, a[href], iframe, video, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled);
-      if (!focusables.length) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
-  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeItemDetail(); });
 }
 
 document.addEventListener('DOMContentLoaded', initMenuLive);
