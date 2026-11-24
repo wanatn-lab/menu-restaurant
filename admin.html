@@ -151,6 +151,15 @@
     </fieldset>
 
     <fieldset class="admin-section">
+      <legend>📞 เบอร์โทรร้าน</legend>
+      <div class="field">
+        <label for="f-phone">เบอร์โทร</label>
+        <input type="tel" id="f-phone" placeholder="093-030-9164" inputmode="tel" style="width:100%;">
+        <div class="sub">เปลี่ยนแล้วกด "บันทึกการเปลี่ยนแปลง" เบอร์จะเปลี่ยนทุกหน้าของเว็บ (ปุ่มโทร ลิงก์โทรในหน้าเมนู ติดต่อ เกี่ยวกับเรา บทความ ฯลฯ) พิมพ์ตัวเลข 10 หลักได้เลย เช่น 0930309164</div>
+      </div>
+    </fieldset>
+
+    <fieldset class="admin-section">
       <legend>🏠 หน้าแรก — ส่วนบนสุด (Hero)</legend>
       <div class="field">
         <label for="f-home-heading">หัวข้อใหญ่</label>
@@ -493,6 +502,7 @@ async function loadContent() {
 
 function fillForm() {
   el('f-announce').value = content.announceBar || '';
+  el('f-phone').value = content.phone || '093-030-9164';
   el('f-home-heading').value = content.home.heroHeading || '';
   el('f-home-lead').value = content.home.heroLead || '';
   el('f-home-image').value = content.home.heroImage || '';
@@ -659,6 +669,7 @@ el('addMenuItemBtn').addEventListener('click', () => {
 
 function gatherContent() {
   content.announceBar = el('f-announce').value.trim();
+  content.phone = el('f-phone').value.trim();
   content.home.heroHeading = el('f-home-heading').value.trim();
   content.home.heroLead = el('f-home-lead').value.trim();
   content.home.heroImage = el('f-home-image').value.trim();
